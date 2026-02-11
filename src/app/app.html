@@ -18,13 +18,48 @@
       </button>
     </div>
 
-    <nav class="menu" id="sidebarMenu">
-      <button type="button">Dashboard</button>
-      <button type="button">Serviços</button>
-      <button type="button">Clientes</button>
-      <button type="button">Relatórios</button>
-      <button type="button">Configurações</button>
-    </nav>
+    <div class="menu-scroll-area">
+      <nav class="menu" id="sidebarMenu">
+        @if (menuSections.length) {
+          @for (section of menuSections; track section.title) {
+            @let sectionId = section.title.toLowerCase().replace(/\\s+/g, '-');
+            <section
+              class="menu-section"
+              [class.menu-section--expanded]="isSectionExpanded(section.title)"
+            >
+              <button
+                class="menu-section-toggle"
+                type="button"
+                (click)="toggleSection(section.title)"
+                [attr.aria-expanded]="isSectionExpanded(section.title)"
+                [attr.aria-controls]="sectionId + '-items'"
+              >
+                <span>{{ section.title }}</span>
+                <svg
+                  class="chevron-icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  [class.expanded]="isSectionExpanded(section.title)"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+              @if (isSectionExpanded(section.title)) {
+                <ul [id]="sectionId + '-items'">
+                  @for (item of section.items; track item.label) {
+                    <li>
+                      <button type="button" [attr.data-route]="item.route">{{ item.label }}</button>
+                    </li>
+                  }
+                </ul>
+              }
+            </section>
+          }
+        } @else {
+          <p class="menu-empty">Nenhuma opção encontrada.</p>
+        }
+      </nav>
+    </div>
   </aside>
 
   <main class="content">
