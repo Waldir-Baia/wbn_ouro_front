@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { ClientFormComponent } from '../client-form/client-form.component';
 
 interface ClientSummary {
   id: number;
@@ -13,7 +12,7 @@ interface ClientSummary {
 @Component({
   selector: 'app-client-list',
   standalone: true,
-  imports: [CommonModule, ClientFormComponent],
+  imports: [CommonModule],
   templateUrl: './client-list.component.html',
   styleUrl: './client-list.component.css'
 })
