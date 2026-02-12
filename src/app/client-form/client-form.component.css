@@ -16,18 +16,17 @@
 .form-section {
   border: 1px solid #e2e8f0;
   border-radius: 1rem;
-  padding: 1.5rem;
+  padding: 1.25rem 1.5rem;
   background: #ffffff;
-  box-shadow: 0 1px 2px rgba(15, 55, 70, 0.1);
+  box-shadow: 0 1px 2px rgba(15, 55, 70, 0.08);
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 .form-section header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: flex-start;
   gap: 1rem;
 }
 
@@ -57,12 +56,6 @@
   color: #64748b;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-}
-
-.form-section h2 {
-  margin: 0;
-  font-size: 1.2rem;
-  color: #0f172a;
 }
 
 .grid {
@@ -132,7 +125,14 @@ label.full-width,
 
 .form-actions {
   display: flex;
-  gap: 1rem;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  position: sticky;
+  bottom: 0;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 35%);
+  border-top: 1px solid #e2e8f0;
 }
 
 .form-actions button {

@@ -111,8 +111,95 @@ td {
   color: #475569;
 }
 
+/* Dialog */
+.client-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.client-dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(1px);
+}
+
+.client-dialog__panel {
+  position: relative;
+  width: min(1200px, 96vw);
+  height: min(920px, 95vh);
+  background: #fff;
+  border-radius: 1.5rem;
+  border: 1px solid #e2e8f0;
+  padding: 2rem;
+  box-shadow: 0 40px 90px rgba(15, 60, 76, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.client-dialog__panel header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.client-dialog__panel header p {
+  margin: 0;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+}
+
+.client-dialog__panel header h3 {
+  margin: 0.2rem 0 0;
+  font-size: 1.4rem;
+  color: #0f172a;
+}
+
+.client-dialog__panel .icon {
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #475569;
+}
+
+.dialog-body {
+  flex: 1;
+  overflow: auto;
+  padding-right: 0.75rem;
+}
+
+.dialog-body app-client-form {
+  display: block;
+}
+
 @media (max-width: 720px) {
   .client-table {
     padding-left: 0;
+  }
+
+  .client-dialog {
+    padding: 1rem;
+  }
+
+  .client-dialog__panel {
+    padding: 1.25rem;
+    width: 100%;
+    height: 95vh;
+  }
+
+  .dialog-body {
+    padding-right: 0.25rem;
   }
 }

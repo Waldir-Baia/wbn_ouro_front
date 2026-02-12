@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
+import { ClientFormComponent } from '../client-form/client-form.component';
 
 interface ClientSummary {
   id: number;
@@ -12,7 +13,7 @@ interface ClientSummary {
 @Component({
   selector: 'app-client-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ClientFormComponent],
   templateUrl: './client-list.component.html',
   styleUrl: './client-list.component.css'
 })
@@ -29,4 +30,16 @@ export class ClientListComponent {
     inativo: 'Inativo',
     vip: 'VIP'
   };
+
+  protected readonly dialogMode = signal<'create' | 'edit'>('create');
+  protected readonly dialogOpen = signal(false);
+
+  protected openDialog(mode: 'create' | 'edit'): void {
+    this.dialogMode.set(mode);
+    this.dialogOpen.set(true);
+  }
+
+  protected closeDialog(): void {
+    this.dialogOpen.set(false);
+  }
 }

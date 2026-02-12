@@ -49,14 +49,6 @@
             Telefone principal
             <input type="tel" formControlName="phone" placeholder="(00) 00000-0000" />
           </label>
-          <label class="toggle">
-            <input type="checkbox" formControlName="whatsappOptIn" />
-            Prefere atendimento por WhatsApp
-          </label>
-          <label class="toggle">
-            <input type="checkbox" formControlName="vipClient" />
-            Cliente VIP
-          </label>
         </div>
       </section>
     </li>
@@ -102,73 +94,6 @@
       </section>
     </li>
 
-    <li>
-      <section class="form-section" formGroupName="jewelryProfile">
-        <header>
-          <div class="section-label">
-            <span>04</span>
-            <p>Preferências</p>
-          </div>
-        </header>
-        <div class="grid three-cols">
-          <label>
-            Categoria favorita
-            <select formControlName="category">
-              <option value="aneis">Anéis</option>
-              <option value="cordoes">Cordões</option>
-              <option value="pulseiras">Pulseiras</option>
-              <option value="brincos">Brincos</option>
-            </select>
-          </label>
-          <label>
-            Metal preferido
-            <select formControlName="metal">
-              <option value="ouro-amarelo">Ouro amarelo</option>
-              <option value="ouro-branco">Ouro branco</option>
-              <option value="ouro-rose">Ouro rosé</option>
-              <option value="prata">Prata</option>
-            </select>
-          </label>
-          <label>
-            Peso/Aro ou medida
-            <input type="text" formControlName="size" placeholder="Aro 15" />
-          </label>
-          <label>
-            Pedra preferida
-            <input type="text" formControlName="stone" placeholder="Diamante" />
-          </label>
-          <label>
-            Urgência média
-            <select formControlName="urgency">
-              <option value="normal">Normal</option>
-              <option value="prioridade">Prioridade</option>
-              <option value="express">Express</option>
-            </select>
-          </label>
-          <label class="full-width">
-            Observações
-            <textarea rows="3" formControlName="notes" placeholder="Detalhes importantes"></textarea>
-          </label>
-        </div>
-      </section>
-    </li>
-
-    <li>
-      <section class="form-section">
-        <header>
-          <div class="section-label">
-            <span>05</span>
-            <p>Consentimentos</p>
-          </div>
-        </header>
-        <div class="grid one-col">
-          <label class="toggle">
-            <input type="checkbox" formControlName="marketingOptIn" />
-            Aceita receber novidades e ofertas exclusivas
-          </label>
-        </div>
-      </section>
-    </li>
   </ol>
 
   <div class="form-actions">

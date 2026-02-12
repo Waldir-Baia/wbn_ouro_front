@@ -19,7 +19,6 @@ export class ClientFormComponent {
     birthDate: [''],
     email: ['', [Validators.email]],
     phone: ['', Validators.required],
-    whatsappOptIn: [true],
     address: this.fb.group({
       street: ['', Validators.required],
       number: ['', Validators.required],
@@ -29,15 +28,6 @@ export class ClientFormComponent {
       state: ['', Validators.required],
       zip: ['', Validators.required]
     }),
-    jewelryProfile: this.fb.group({
-      category: ['aneis'],
-      metal: ['ouro-amarelo'],
-      size: [''],
-      stone: [''],
-      urgency: ['normal'],
-      notes: ['']
-    }),
-    vipClient: [false],
     marketingOptIn: [true]
   });
 
@@ -51,12 +41,6 @@ export class ClientFormComponent {
     alert('Cliente salvo com sucesso!');
     this.form.reset({
       clientType: 'pf',
-      whatsappOptIn: true,
-      jewelryProfile: {
-        category: 'aneis',
-        metal: 'ouro-amarelo',
-        urgency: 'normal'
-      },
       marketingOptIn: true
     });
   }
