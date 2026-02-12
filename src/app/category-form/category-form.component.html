@@ -1,0 +1,35 @@
+<form class="category-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="form-grid">
+    <label>
+      Nome da categoria
+      <input type="text" formControlName="name" placeholder="Aliança clássica" />
+    </label>
+    <label>
+      Tipo
+      <select formControlName="type">
+        <option value="alianca">Alianças</option>
+        <option value="aneis">Anéis</option>
+        <option value="cordoes">Cordões</option>
+        <option value="pulseiras">Pulseiras</option>
+        <option value="brincos">Brincos</option>
+        <option value="outros">Outros</option>
+      </select>
+    </label>
+    <label>
+      Status
+      <select formControlName="status">
+        <option value="ativo">Ativo</option>
+        <option value="inativo">Inativo</option>
+      </select>
+    </label>
+    <label class="full">
+      Descrição
+      <textarea rows="3" formControlName="description" placeholder="Notas sobre condições de produção"></textarea>
+    </label>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit">Salvar categoria</button>
+    <button type="button" class="ghost" (click)="form.reset()">Cancelar</button>
+  </div>
+</form>

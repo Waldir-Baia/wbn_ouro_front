@@ -1,0 +1,60 @@
+<section class="category-table">
+  <header class="category-table__header">
+    <div>
+      <p>Peças e modelos</p>
+      <h2>Categorias disponíveis</h2>
+    </div>
+    <div class="category-actions">
+      <button type="button" class="primary" (click)="openDialog('create')">Criar</button>
+      <button type="button" class="ghost" (click)="openDialog('edit')">Editar</button>
+      <button type="button" class="danger">Excluir</button>
+    </div>
+  </header>
+
+  <div class="list-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nome</th>
+          <th>Tipo</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (category of categories(); track category.id) {
+          <tr>
+            <td>#{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <td>{{ category.type }}</td>
+            <td>
+              <span class="badge" [class.inativo]="category.status === 'inativo'">
+                {{ statusLabel[category.status] }}
+              </span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+
+@if (dialogOpen()) {
+  <div class="category-dialog" role="dialog" aria-modal="true">
+    <div class="category-dialog__backdrop" (click)="closeDialog()"></div>
+    <div class="category-dialog__panel">
+      <header>
+        <div>
+          <p>{{ dialogMode() === 'create' ? 'Cadastrar' : 'Editar' }}</p>
+          <h3>{{ dialogMode() === 'create' ? 'Nova categoria' : 'Editar categoria' }}</h3>
+        </div>
+        <button type="button" class="icon" (click)="closeDialog()" aria-label="Fechar dialog">
+          &times;
+        </button>
+      </header>
+      <div class="dialog-body">
+        <app-category-form />
+      </div>
+    </div>
+  </div>
+}
