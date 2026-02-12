@@ -1,0 +1,66 @@
+<section class="piece-table">
+  <header class="piece-table__header">
+    <div>
+      <p>Peças e modelos</p>
+      <h2>Catálogo de peças cadastradas</h2>
+    </div>
+    <div class="piece-actions">
+      <button type="button" class="primary" (click)="openDialog('create')">Criar</button>
+      <button type="button" class="ghost" (click)="openDialog('edit')">Editar</button>
+      <button type="button" class="danger">Excluir</button>
+    </div>
+  </header>
+
+  <div class="list-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Código</th>
+          <th>Nome</th>
+          <th>Categoria</th>
+          <th>Metal</th>
+          <th>Status</th>
+          <th>Preço base</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (piece of pieces(); track piece.id) {
+          <tr>
+            <td>#{{ piece.id }}</td>
+            <td>{{ piece.code }}</td>
+            <td>{{ piece.name }}</td>
+            <td>{{ piece.category }}</td>
+            <td>{{ piece.metal }}</td>
+            <td>
+              <span class="badge" [class.sob-demanda]="piece.stock === 'sob-demanda'" [class.indisponivel]="piece.stock === 'indisponivel'">
+                {{ stockLabel[piece.stock] }}
+              </span>
+            </td>
+            <td>{{ piece.price }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+
+@if (dialogOpen()) {
+  <div class="piece-dialog" role="dialog" aria-modal="true">
+    <div class="piece-dialog__backdrop" (click)="closeDialog()"></div>
+    <div class="piece-dialog__panel">
+      <header>
+        <div>
+          <p>{{ dialogMode() === 'create' ? 'Cadastrar' : 'Editar' }}</p>
+          <h3>{{ dialogMode() === 'create' ? 'Nova peça' : 'Editar peça' }}</h3>
+        </div>
+        <button type="button" class="icon" (click)="closeDialog()" aria-label="Fechar dialog">
+          &times;
+        </button>
+      </header>
+      <div class="dialog-body">
+        <app-piece-form />
+      </div>
+    </div>
+  </div>
+}
