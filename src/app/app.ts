@@ -25,7 +25,7 @@ export class App {
         { label: 'Clientes', route: '/cadastro/clientes' },
         { label: 'Peças & Modelos', route: '/cadastro/pecas' },
         { label: 'Categorias', route: '/cadastro/categorias' },
-        { label: 'Serviços e Procedimentos', route: '/cadastro/servicos' },
+        { label: 'Serviços', route: '/cadastro/servicos' },
         { label: 'Matérias-primas', route: '/cadastro/materias-primas' },
         { label: 'Fornecedores', route: '/cadastro/fornecedores' },
         { label: 'Tabelas de preço', route: '/cadastro/tabelas-preco' }

@@ -1,0 +1,41 @@
+<form class="service-form" [formGroup]="form" (ngSubmit)="submit()">
+  <section class="form-grid">
+    <label>
+      Nome do serviço
+      <input type="text" formControlName="name" placeholder="Polimento completo" />
+    </label>
+    <label>
+      Categoria
+      <select formControlName="category">
+        <option value="ajuste">Ajustes</option>
+        <option value="criacao">Criação</option>
+        <option value="manutencao">Manutenção</option>
+        <option value="limpeza">Limpeza</option>
+      </select>
+    </label>
+    <label>
+      Duração estimada (dias)
+      <input type="number" min="1" formControlName="duration" placeholder="3" />
+    </label>
+    <label>
+      Preço base (R$)
+      <input type="number" step="0.01" formControlName="basePrice" placeholder="250,00" />
+    </label>
+    <label>
+      Status
+      <select formControlName="status">
+        <option value="ativo">Ativo</option>
+        <option value="inativo">Inativo</option>
+      </select>
+    </label>
+    <label class="full">
+      Descrição detalhada
+      <textarea rows="3" formControlName="description" placeholder="Etapas e observações do serviço"></textarea>
+    </label>
+  </section>
+
+  <div class="form-actions">
+    <button type="submit">Salvar serviço</button>
+    <button type="button" class="ghost" (click)="form.reset()">Cancelar</button>
+  </div>
+</form>
