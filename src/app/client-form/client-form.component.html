@@ -1,0 +1,183 @@
+<form class="client-form" [formGroup]="form" (ngSubmit)="submit()">
+  <ol class="form-groups">
+    <li>
+      <section class="form-section">
+        <header>
+          <div class="section-label">
+            <span>01</span>
+            <p>Cadastro básico</p>
+          </div>
+          <h2>Identificação do cliente</h2>
+        </header>
+        <div class="grid two-cols">
+          <label>
+            Tipo de cliente
+            <select formControlName="clientType">
+              <option value="pf">Pessoa Física</option>
+              <option value="pj">Pessoa Jurídica</option>
+            </select>
+          </label>
+          <label>
+            Documento (CPF/CNPJ)
+            <input type="text" formControlName="document" placeholder="000.000.000-00" />
+          </label>
+          <label class="full-width">
+            Nome completo / Razão social
+            <input type="text" formControlName="fullName" placeholder="Digite o nome" />
+          </label>
+          <label>
+            Data de nascimento
+            <input type="date" formControlName="birthDate" />
+          </label>
+        </div>
+      </section>
+    </li>
+
+    <li>
+      <section class="form-section">
+        <header>
+          <div class="section-label">
+            <span>02</span>
+            <p>Contato</p>
+          </div>
+          <h2>Informações de contato</h2>
+        </header>
+        <div class="grid two-cols">
+          <label>
+            E-mail
+            <input type="email" formControlName="email" placeholder="cliente@exemplo.com" />
+          </label>
+          <label>
+            Telefone principal
+            <input type="tel" formControlName="phone" placeholder="(00) 00000-0000" />
+          </label>
+          <label class="toggle">
+            <input type="checkbox" formControlName="whatsappOptIn" />
+            Prefere atendimento por WhatsApp
+          </label>
+          <label class="toggle">
+            <input type="checkbox" formControlName="vipClient" />
+            Cliente VIP
+          </label>
+        </div>
+      </section>
+    </li>
+
+    <li>
+      <section class="form-section" formGroupName="address">
+        <header>
+          <div class="section-label">
+            <span>03</span>
+            <p>Endereço</p>
+          </div>
+          <h2>Localização para entregas</h2>
+        </header>
+        <div class="grid three-cols">
+          <label class="two-cols">
+            Rua
+            <input type="text" formControlName="street" />
+          </label>
+          <label>
+            Número
+            <input type="text" formControlName="number" />
+          </label>
+          <label>
+            Complemento
+            <input type="text" formControlName="complement" />
+          </label>
+          <label>
+            Bairro
+            <input type="text" formControlName="district" />
+          </label>
+          <label>
+            Cidade
+            <input type="text" formControlName="city" />
+          </label>
+          <label>
+            Estado
+            <input type="text" formControlName="state" />
+          </label>
+          <label>
+            CEP
+            <input type="text" formControlName="zip" placeholder="00000-000" />
+          </label>
+        </div>
+      </section>
+    </li>
+
+    <li>
+      <section class="form-section" formGroupName="jewelryProfile">
+        <header>
+          <div class="section-label">
+            <span>04</span>
+            <p>Preferências</p>
+          </div>
+          <h2>Perfil de peças</h2>
+        </header>
+        <div class="grid three-cols">
+          <label>
+            Categoria favorita
+            <select formControlName="category">
+              <option value="aneis">Anéis</option>
+              <option value="cordoes">Cordões</option>
+              <option value="pulseiras">Pulseiras</option>
+              <option value="brincos">Brincos</option>
+            </select>
+          </label>
+          <label>
+            Metal preferido
+            <select formControlName="metal">
+              <option value="ouro-amarelo">Ouro amarelo</option>
+              <option value="ouro-branco">Ouro branco</option>
+              <option value="ouro-rose">Ouro rosé</option>
+              <option value="prata">Prata</option>
+            </select>
+          </label>
+          <label>
+            Peso/Aro ou medida
+            <input type="text" formControlName="size" placeholder="Aro 15" />
+          </label>
+          <label>
+            Pedra preferida
+            <input type="text" formControlName="stone" placeholder="Diamante" />
+          </label>
+          <label>
+            Urgência média
+            <select formControlName="urgency">
+              <option value="normal">Normal</option>
+              <option value="prioridade">Prioridade</option>
+              <option value="express">Express</option>
+            </select>
+          </label>
+          <label class="full-width">
+            Observações
+            <textarea rows="3" formControlName="notes" placeholder="Detalhes importantes"></textarea>
+          </label>
+        </div>
+      </section>
+    </li>
+
+    <li>
+      <section class="form-section">
+        <header>
+          <div class="section-label">
+            <span>05</span>
+            <p>Consentimentos</p>
+          </div>
+          <h2>Preferências adicionais</h2>
+        </header>
+        <div class="grid one-col">
+          <label class="toggle">
+            <input type="checkbox" formControlName="marketingOptIn" />
+            Aceita receber novidades e ofertas exclusivas
+          </label>
+        </div>
+      </section>
+    </li>
+  </ol>
+
+  <div class="form-actions">
+    <button type="submit">Salvar Cliente</button>
+    <button type="button" class="ghost" (click)="form.reset()">Cancelar</button>
+  </div>
+</form>

@@ -1,0 +1,49 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dashboard-header p {
+  margin: 0;
+  color: #64748b;
+}
+
+.dashboard-header h2 {
+  margin: 0.25rem 0 0;
+  font-size: 1.8rem;
+  color: #0f172a;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.dashboard-grid article {
+  padding: 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(15, 55, 70, 0.08);
+}
+
+.dashboard-grid h3 {
+  margin: 0.5rem 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+.dashboard-grid p {
+  margin: 0;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.icon {
+  font-size: 1.5rem;
+}

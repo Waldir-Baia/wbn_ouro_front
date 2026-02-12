@@ -1,0 +1,19 @@
+<section class="dashboard">
+  <header class="dashboard-header">
+    <div>
+      <p>Painel principal</p>
+      <h2>Bem-vindo à operação de ourivesaria</h2>
+      <p class="subtitle">Escolha um módulo no menu ao lado para começar.</p>
+    </div>
+  </header>
+
+  <div class="dashboard-grid">
+    @for (shortcut of shortcuts; track shortcut.title) {
+      <article>
+        <span class="icon">{{ shortcut.icon }}</span>
+        <h3>{{ shortcut.title }}</h3>
+        <p>{{ shortcut.description }}</p>
+      </article>
+    }
+  </div>
+</section>

@@ -1,0 +1,51 @@
+<section class="client-page">
+  <div class="client-actions">
+    <button type="button" class="primary">Criar</button>
+    <button type="button" class="ghost">Editar</button>
+    <button type="button" class="danger">Excluir</button>
+  </div>
+
+  <div class="client-list-card">
+    <header>
+      <div>
+        <p>Clientes</p>
+        <h2>Lista de clientes cadastrados</h2>
+      </div>
+      <button type="button" class="ghost">Exportar</button>
+    </header>
+
+    <div class="list-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Documento</th>
+            <th>Status</th>
+            <th>Último pedido</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (client of clients(); track client.id) {
+            <tr>
+              <td>#{{ client.id }}</td>
+              <td>{{ client.name }}</td>
+              <td>{{ client.document }}</td>
+              <td>
+                <span class="badge" [class.vip]="client.status === 'vip'" [class.inativo]="client.status === 'inativo'">
+                  {{ statusLabel[client.status] }}
+                </span>
+              </td>
+              <td>{{ client.lastOrder }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="client-form-card">
+    <h3>Novo cliente</h3>
+    <app-client-form />
+  </div>
+</section>

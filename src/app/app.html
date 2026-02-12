@@ -48,7 +48,13 @@
                 <ul [id]="sectionId + '-items'">
                   @for (item of section.items; track item.label) {
                     <li>
-                      <button type="button" [attr.data-route]="item.route">{{ item.label }}</button>
+                      <button
+                        type="button"
+                        [routerLink]="item.route"
+                        routerLinkActive="active"
+                      >
+                        {{ item.label }}
+                      </button>
                     </li>
                   }
                 </ul>
@@ -67,12 +73,8 @@
       <h1>Bem-vindo ao painel de serviços</h1>
       <p>Selecione uma das opções no menu lateral para começar.</p>
     </header>
-    <section class="placeholder">
-      <p>
-        Este espaço ficará para os módulos do sistema. O fundo permanece branco,
-        enquanto o menu lateral usa o tom petróleo descrito.
-      </p>
+    <section class="workspace">
+      <router-outlet />
     </section>
-    <router-outlet />
   </main>
 </div>
