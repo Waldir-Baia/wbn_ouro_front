@@ -4,6 +4,7 @@ import { ClientListComponent } from './client-list/client-list.component';
 import { PieceListComponent } from './piece-list/piece-list.component';
 import { CategoryListComponent } from './category-list/category-list.component';
 import { ServiceListComponent } from './service-list/service-list.component';
+import { MaterialListComponent } from './material-list/material-list.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,10 @@ export const routes: Routes = [
   {
     path: 'cadastro/servicos',
     component: ServiceListComponent
+  },
+  {
+    path: 'cadastro/materias-primas',
+    component: MaterialListComponent
   },
   {
     path: '**',

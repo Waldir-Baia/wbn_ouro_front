@@ -1,0 +1,66 @@
+<section class="material-table">
+  <header class="material-table__header">
+    <div>
+      <p>Matéria-prima</p>
+      <h2>Controle de insumos</h2>
+    </div>
+    <div class="material-actions">
+      <button type="button" class="primary" (click)="openDialog('create')">Criar</button>
+      <button type="button" class="ghost" (click)="openDialog('edit')">Editar</button>
+      <button type="button" class="danger">Excluir</button>
+    </div>
+  </header>
+
+  <div class="list-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nome</th>
+          <th>Categoria</th>
+          <th>Fornecedor</th>
+          <th>Unidade</th>
+          <th>Estoque</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (material of materials(); track material.id) {
+          <tr>
+            <td>#{{ material.id }}</td>
+            <td>{{ material.name }}</td>
+            <td>{{ material.category }}</td>
+            <td>{{ material.supplier || '-' }}</td>
+            <td>{{ material.unit }}</td>
+            <td>{{ material.stockQuantity }}</td>
+            <td>
+              <span class="badge" [class.indisponivel]="material.status === 'indisponivel'">
+                {{ statusLabel[material.status] }}
+              </span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+
+@if (dialogOpen()) {
+  <div class="material-dialog" role="dialog" aria-modal="true">
+    <div class="material-dialog__backdrop" (click)="closeDialog()"></div>
+    <div class="material-dialog__panel">
+      <header>
+        <div>
+          <p>{{ dialogMode() === 'create' ? 'Cadastrar' : 'Editar' }}</p>
+          <h3>{{ dialogMode() === 'create' ? 'Nova matéria-prima' : 'Editar matéria-prima' }}</h3>
+        </div>
+        <button type="button" class="icon" (click)="closeDialog()" aria-label="Fechar dialog">
+          &times;
+        </button>
+      </header>
+      <div class="dialog-body">
+        <app-material-form />
+      </div>
+    </div>
+  </div>
+}
