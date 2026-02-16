@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TipoCliente } from '../core/models/cliente.model';
 
 @Component({
   selector: 'app-client-form',
@@ -9,11 +10,13 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
   templateUrl: './client-form.component.html',
   styleUrl: './client-form.component.css'
 })
-export class ClientFormComponent {
+export class ClientFormComponent implements OnChanges {
   private readonly fb = inject(FormBuilder);
 
+  protected readonly tipoClienteEnum = TipoCliente;
+
   protected readonly form = this.fb.group({
-    clientType: ['pf', Validators.required],
+    clientType: [TipoCliente.PessoaFisica, Validators.required],
     fullName: ['', [Validators.required, Validators.minLength(3)]],
     document: ['', Validators.required],
     birthDate: [''],
@@ -31,17 +34,75 @@ export class ClientFormComponent {
     marketingOptIn: [true]
   });
 
+  @Input() initialValue: ClientFormValue | null = null;
+  @Input() mode: 'create' | 'edit' = 'create';
+  @Input() loading = false;
+  @Output() saved = new EventEmitter<ClientFormValue>();
+  @Output() cancelled = new EventEmitter<void>();
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialValue']) {
+      if (this.initialValue) {
+        this.form.reset(this.initialValue);
+      } else {
+        this.resetForm();
+      }
+    }
+    if (changes['mode'] && !this.initialValue) {
+      this.resetForm();
+    }
+  }
+
   protected submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    console.table(this.form.value);
-    alert('Cliente salvo com sucesso!');
-    this.form.reset({
-      clientType: 'pf',
+    this.saved.emit(this.form.getRawValue() as ClientFormValue);
+  }
+
+  protected handleCancel(): void {
+    this.cancelled.emit();
+  }
+
+  private resetForm(): void {
+      this.form.reset({
+        clientType: TipoCliente.PessoaFisica,
+      fullName: '',
+      document: '',
+      birthDate: '',
+      email: '',
+      phone: '',
+      address: {
+        street: '',
+        number: '',
+        complement: '',
+        district: '',
+        city: '',
+        state: '',
+        zip: ''
+      },
       marketingOptIn: true
     });
   }
+}
+
+export interface ClientFormValue {
+  clientType: TipoCliente;
+  fullName: string;
+  document: string;
+  birthDate?: string | null;
+  email?: string | null;
+  phone: string;
+  address: {
+    street: string;
+    number: string;
+    complement?: string | null;
+    district: string;
+    city: string;
+    state: string;
+    zip: string;
+  };
+  marketingOptIn: boolean;
 }

@@ -12,8 +12,8 @@
           <label>
             Tipo de cliente
             <select formControlName="clientType">
-              <option value="pf">Pessoa Física</option>
-              <option value="pj">Pessoa Jurídica</option>
+              <option [ngValue]="tipoClienteEnum.PessoaFisica">Pessoa Física</option>
+              <option [ngValue]="tipoClienteEnum.PessoaJuridica">Pessoa Jurídica</option>
             </select>
           </label>
           <label>
@@ -97,7 +97,10 @@
   </ol>
 
   <div class="form-actions">
-    <button type="submit">Salvar Cliente</button>
-    <button type="button" class="ghost" (click)="form.reset()">Cancelar</button>
+    <button type="submit" [disabled]="loading">
+      <span class="spinner" *ngIf="loading" aria-hidden="true"></span>
+      {{ mode === 'edit' ? 'Salvar alterações' : 'Salvar cliente' }}
+    </button>
+    <button type="button" class="ghost" (click)="handleCancel()" [disabled]="loading">Cancelar</button>
   </div>
 </form>
