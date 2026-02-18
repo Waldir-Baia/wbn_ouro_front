@@ -18,8 +18,8 @@
     <label>
       Status
       <select formControlName="status">
-        <option value="ativo">Ativo</option>
-        <option value="inativo">Inativo</option>
+        <option [ngValue]="statusEnum.Ativo">Ativo</option>
+        <option [ngValue]="statusEnum.Inativo">Inativo</option>
       </select>
     </label>
     <label class="full">
@@ -29,7 +29,10 @@
   </div>
 
   <div class="form-actions">
-    <button type="submit">Salvar categoria</button>
-    <button type="button" class="ghost" (click)="form.reset()">Cancelar</button>
+    <button type="submit" [disabled]="loading">
+      <span class="spinner" *ngIf="loading" aria-hidden="true"></span>
+      {{ mode === 'edit' ? 'Salvar alterações' : 'Salvar categoria' }}
+    </button>
+    <button type="button" class="ghost" (click)="handleCancel()" [disabled]="loading">Cancelar</button>
   </div>
 </form>
