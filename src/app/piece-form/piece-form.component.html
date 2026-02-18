@@ -49,9 +49,9 @@
     <label>
       Situação do estoque
       <select formControlName="stock">
-        <option value="disponivel">Disponível</option>
-        <option value="sob-demanda">Sob demanda</option>
-        <option value="indisponivel">Indisponível</option>
+        <option [ngValue]="stockStatusEnum.Disponivel">Disponível</option>
+        <option [ngValue]="stockStatusEnum.SobDemanda">Sob demanda</option>
+        <option [ngValue]="stockStatusEnum.Indisponivel">Indisponível</option>
       </select>
     </label>
     <label class="full">
@@ -61,7 +61,10 @@
   </section>
 
   <div class="form-actions">
-    <button type="submit">Salvar peça</button>
-    <button type="button" class="ghost" (click)="form.reset()">Cancelar</button>
+    <button type="submit" [disabled]="loading">
+      <span class="spinner" *ngIf="loading" aria-hidden="true"></span>
+      {{ mode === 'edit' ? 'Salvar alterações' : 'Salvar peça' }}
+    </button>
+    <button type="button" class="ghost" (click)="handleCancel()" [disabled]="loading">Cancelar</button>
   </div>
 </form>

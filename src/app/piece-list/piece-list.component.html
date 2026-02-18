@@ -6,8 +6,8 @@
     </div>
     <div class="piece-actions">
       <button type="button" class="primary" (click)="openDialog('create')">Criar</button>
-      <button type="button" class="ghost" (click)="openDialog('edit')">Editar</button>
-      <button type="button" class="danger">Excluir</button>
+      <button type="button" class="ghost" (click)="openDialog('edit')" [disabled]="!canEdit">Editar</button>
+      <button type="button" class="danger" (click)="deleteSelected()" [disabled]="!hasRowSelection">Excluir</button>
     </div>
   </header>
 
@@ -15,30 +15,28 @@
     <table>
       <thead>
         <tr>
-          <th>#</th>
-          <th>Código</th>
-          <th>Nome</th>
-          <th>Categoria</th>
-          <th>Metal</th>
-          <th>Status</th>
-          <th>Preço base</th>
+          @for (column of gridColumns(); track column.key) {
+            <th [style.width.px]="column.width || null">
+              {{ column.label }}
+            </th>
+          }
         </tr>
       </thead>
       <tbody>
-        @for (piece of pieces(); track piece.id) {
+        @if (gridRows().length === 0) {
           <tr>
-            <td>#{{ piece.id }}</td>
-            <td>{{ piece.code }}</td>
-            <td>{{ piece.name }}</td>
-            <td>{{ piece.category }}</td>
-            <td>{{ piece.metal }}</td>
-            <td>
-              <span class="badge" [class.sob-demanda]="piece.stock === 'sob-demanda'" [class.indisponivel]="piece.stock === 'indisponivel'">
-                {{ stockLabel[piece.stock] }}
-              </span>
+            <td class="table-empty" [attr.colspan]="gridColumns().length || 1">
+              Nenhum registro encontrado.
             </td>
-            <td>{{ piece.price }}</td>
           </tr>
+        } @else {
+          @for (row of gridRows(); track row.id) {
+            <tr (click)="selectRow(row)" [class.selected]="selectedRowId() === row.id">
+              @for (column of gridColumns(); track column.key) {
+                <td>{{ formatCellValue(row.data[column.key]) }}</td>
+              }
+            </tr>
+          }
         }
       </tbody>
     </table>
@@ -59,7 +57,13 @@
         </button>
       </header>
       <div class="dialog-body">
-        <app-piece-form />
+        <app-piece-form
+          [initialValue]="formInitialValue()"
+          [mode]="dialogMode()"
+          [loading]="saving()"
+          (saved)="handleFormSubmit($event)"
+          (cancelled)="closeDialog()"
+        />
       </div>
     </div>
   </div>
