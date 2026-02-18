@@ -6,8 +6,8 @@
     </div>
     <div class="material-actions">
       <button type="button" class="primary" (click)="openDialog('create')">Criar</button>
-      <button type="button" class="ghost" (click)="openDialog('edit')">Editar</button>
-      <button type="button" class="danger">Excluir</button>
+      <button type="button" class="ghost" (click)="openDialog('edit')" [disabled]="!canEdit">Editar</button>
+      <button type="button" class="danger" (click)="deleteSelected()" [disabled]="!hasRowSelection">Excluir</button>
     </div>
   </header>
 
@@ -15,30 +15,28 @@
     <table>
       <thead>
         <tr>
-          <th>#</th>
-          <th>Nome</th>
-          <th>Categoria</th>
-          <th>Fornecedor</th>
-          <th>Unidade</th>
-          <th>Estoque</th>
-          <th>Status</th>
+          @for (column of gridColumns(); track column.key) {
+            <th [style.width.px]="column.width || null">
+              {{ column.label }}
+            </th>
+          }
         </tr>
       </thead>
       <tbody>
-        @for (material of materials(); track material.id) {
+        @if (gridRows().length === 0) {
           <tr>
-            <td>#{{ material.id }}</td>
-            <td>{{ material.name }}</td>
-            <td>{{ material.category }}</td>
-            <td>{{ material.supplier || '-' }}</td>
-            <td>{{ material.unit }}</td>
-            <td>{{ material.stockQuantity }}</td>
-            <td>
-              <span class="badge" [class.indisponivel]="material.status === 'indisponivel'">
-                {{ statusLabel[material.status] }}
-              </span>
+            <td class="table-empty" [attr.colspan]="gridColumns().length || 1">
+              Nenhuma matéria-prima cadastrada.
             </td>
           </tr>
+        } @else {
+          @for (row of gridRows(); track row.id) {
+            <tr (click)="selectRow(row)" [class.selected]="selectedRowId() === row.id">
+              @for (column of gridColumns(); track column.key) {
+                <td>{{ formatCellValue(row.data[column.key]) }}</td>
+              }
+            </tr>
+          }
         }
       </tbody>
     </table>
@@ -59,7 +57,13 @@
         </button>
       </header>
       <div class="dialog-body">
-        <app-material-form />
+        <app-material-form
+          [initialValue]="formInitialValue()"
+          [mode]="dialogMode()"
+          [loading]="saving()"
+          (saved)="handleFormSubmit($event)"
+          (cancelled)="closeDialog()"
+        />
       </div>
     </div>
   </div>

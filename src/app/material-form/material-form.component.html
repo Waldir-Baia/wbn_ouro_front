@@ -50,14 +50,17 @@
     <label>
       Status
       <select formControlName="status">
-        <option value="disponivel">Disponível</option>
-        <option value="indisponivel">Indisponível</option>
+        <option [ngValue]="statusEnum.Disponivel">Disponível</option>
+        <option [ngValue]="statusEnum.Indisponivel">Indisponível</option>
       </select>
     </label>
   </section>
 
   <div class="form-actions">
-    <button type="submit">Salvar matéria-prima</button>
-    <button type="button" class="ghost" (click)="form.reset()">Cancelar</button>
+    <button type="submit" [disabled]="loading">
+      <span class="spinner" *ngIf="loading" aria-hidden="true"></span>
+      {{ mode === 'edit' ? 'Salvar alterações' : 'Salvar matéria-prima' }}
+    </button>
+    <button type="button" class="ghost" (click)="handleCancel()" [disabled]="loading">Cancelar</button>
   </div>
 </form>

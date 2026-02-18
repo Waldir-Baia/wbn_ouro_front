@@ -65,6 +65,9 @@ textarea {
   padding: 0.85rem 1.5rem;
   font-weight: 600;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .form-actions button[type='submit'] {
@@ -76,4 +79,32 @@ textarea {
   background: transparent;
   border: 1px solid #cbd5f5;
   color: #0f172a;
+}
+
+.form-actions button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-top-color: #fff;
+  animation: spin 0.8s linear infinite;
+}
+
+.ghost .spinner {
+  border: 2px solid rgba(15, 23, 42, 0.3);
+  border-top-color: #0f172a;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

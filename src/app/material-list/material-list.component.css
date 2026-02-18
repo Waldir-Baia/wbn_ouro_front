@@ -44,6 +44,10 @@
   border: 1px solid transparent;
 }
 
+.material-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .material-actions .primary {
   background: #0f3c4c;
   color: #e3f2f7;
@@ -104,6 +108,26 @@ td {
 .badge.indisponivel {
   background: #fee2e2;
   color: #b91c1c;
+}
+
+tbody tr {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+tbody tr.selected {
+  background-color: #e2e8f0;
+}
+
+.table-empty {
+  text-align: center;
+  padding: 1.5rem 0;
+  color: #94a3b8;
+  font-size: 0.95rem;
 }
 
 /* Dialog */
