@@ -1,0 +1,70 @@
+<section class="orcamento-table">
+  <header class="orcamento-table__header">
+    <div>
+      <p>Orçamentos</p>
+      <h2>Propostas em andamento</h2>
+    </div>
+    <div class="orcamento-actions">
+      <button type="button" class="primary" (click)="openDialog('create')">Criar</button>
+      <button type="button" class="ghost" (click)="openDialog('edit')" [disabled]="!canEdit">Editar</button>
+      <button type="button" class="danger" (click)="deleteSelected()" [disabled]="!hasRowSelection">Excluir</button>
+    </div>
+  </header>
+
+  <div class="list-wrapper">
+    <table>
+      <thead>
+        <tr>
+          @for (column of gridColumns(); track column.key) {
+            <th [style.width.px]="column.width || null">
+              {{ column.label }}
+            </th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @if (gridRows().length === 0) {
+          <tr>
+            <td class="table-empty" [attr.colspan]="gridColumns().length || 1">
+              Nenhum registro encontrado.
+            </td>
+          </tr>
+        } @else {
+          @for (row of gridRows(); track row.id) {
+            <tr (click)="selectRow(row)" [class.selected]="selectedRowId() === row.id">
+              @for (column of gridColumns(); track column.key) {
+                <td>{{ formatCellValue(row.data[column.key]) }}</td>
+              }
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+
+@if (dialogOpen()) {
+  <div class="orcamento-dialog" role="dialog" aria-modal="true">
+    <div class="orcamento-dialog__backdrop" (click)="closeDialog()"></div>
+    <div class="orcamento-dialog__panel">
+      <header>
+        <div>
+          <p>{{ dialogMode() === 'create' ? 'Cadastrar' : 'Editar' }}</p>
+          <h3>{{ dialogMode() === 'create' ? 'Novo orçamento' : 'Editar orçamento' }}</h3>
+        </div>
+        <button type="button" class="icon" (click)="closeDialog()" aria-label="Fechar dialog">
+          &times;
+        </button>
+      </header>
+      <div class="dialog-body">
+        <app-orcamento-form
+          [initialValue]="formInitialValue()"
+          [mode]="dialogMode()"
+          [loading]="saving()"
+          (saved)="handleFormSubmit($event)"
+          (cancelled)="closeDialog()"
+        />
+      </div>
+    </div>
+  </div>
+}

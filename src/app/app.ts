@@ -36,9 +36,6 @@ export class App {
       items: [
         { label: 'Orçamentos', route: '/producao/orcamentos' },
         { label: 'Ordens de Serviço', route: '/producao/ordens-servico' },
-        { label: 'Controle de Bancada', route: '/producao/bancada' },
-        { label: 'Controle de Estoque', route: '/producao/estoque' },
-        { label: 'Qualidade e Revisão', route: '/producao/qualidade' }
       ]
     },
     {

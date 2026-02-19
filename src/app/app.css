@@ -156,7 +156,7 @@
 .menu-section ul {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 0 0 0.6rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -164,6 +164,24 @@
 
 .menu-section li {
   width: 100%;
+}
+
+.menu-section ul button {
+  position: relative;
+  padding-left: 1.6rem;
+}
+
+.menu-section ul button::before {
+  content: '';
+  position: absolute;
+  left: 0.7rem;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background-color: currentColor;
+  opacity: 0.8;
+  transform: translateY(-50%);
 }
 
 .menu button {
