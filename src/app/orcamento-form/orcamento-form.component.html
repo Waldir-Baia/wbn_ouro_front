@@ -1,15 +1,15 @@
 <form class="orcamento-form" [formGroup]="form" (ngSubmit)="submit()">
   <section class="form-grid">
     <label>
-      Número do orçamento
+      NÃºmero do orÃ§amento
       <input type="text" formControlName="number" placeholder="ORC-2025-001" />
     </label>
     <label>
       Cliente
-      <input type="text" formControlName="client" placeholder="João da Silva" />
+      <input type="text" formControlName="client" placeholder="JoÃ£o da Silva" />
     </label>
     <label>
-      Data de emissão
+      Data de emissÃ£o
       <input type="date" formControlName="issueDate" />
     </label>
     <label>
@@ -30,19 +30,19 @@
       </select>
     </label>
     <label class="full">
-      Descrição
-      <textarea rows="3" formControlName="description" placeholder="Detalhes do orçamento"></textarea>
+      DescriÃ§Ã£o
+      <textarea rows="3" formControlName="description" placeholder="Detalhes do orÃ§amento"></textarea>
     </label>
     <label class="full">
-      Observações
-      <textarea rows="2" formControlName="notes" placeholder="Informações adicionais"></textarea>
+      ObservaÃ§Ãµes
+      <textarea rows="2" formControlName="notes" placeholder="InformaÃ§Ãµes adicionais"></textarea>
     </label>
   </section>
 
   <div class="form-actions">
     <button type="submit" [disabled]="loading">
       <span class="spinner" *ngIf="loading" aria-hidden="true"></span>
-      {{ mode === 'edit' ? 'Salvar alterações' : 'Salvar orçamento' }}
+      {{ mode === 'edit' ? 'Salvar alteraÃ§Ãµes' : 'Salvar orÃ§amento' }}
     </button>
     <button type="button" class="ghost" (click)="handleCancel()" [disabled]="loading">Cancelar</button>
   </div>

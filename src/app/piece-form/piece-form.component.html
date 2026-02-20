@@ -22,13 +22,8 @@
       </select>
     </label>
     <label>
-      Metal principal
-      <select formControlName="metal">
-        <option value="ouro-amarelo">Ouro amarelo</option>
-        <option value="ouro-branco">Ouro branco</option>
-        <option value="ouro-rose">Ouro rosé</option>
-        <option value="prata">Prata</option>
-      </select>
+      Tabela Preço
+      <input type="text" formControlName="priceTable" placeholder="Tabela Ouro 2026" />
     </label>
     <label>
       Peso estimado (g)
@@ -41,6 +36,10 @@
     <label>
       Preço base (R$)
       <input type="number" step="0.01" formControlName="basePrice" placeholder="1500,00" />
+    </label>
+    <label>
+      Valor mão de obra (R$)
+      <input type="number" step="0.01" formControlName="laborValue" placeholder="350,00" />
     </label>
     <label>
       Prazo produção (dias)

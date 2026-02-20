@@ -1,16 +1,16 @@
-<form class="service-form" [formGroup]="form" (ngSubmit)="submit()">
+<form class="tabela-preco-form" [formGroup]="form" (ngSubmit)="submit()">
   <section class="form-grid">
     <label>
-      Nome do serviço
-      <input type="text" formControlName="name" placeholder="Polimento completo" />
+      Nome da tabela
+      <input type="text" formControlName="name" placeholder="Tabela Ouro 2025" />
     </label>
     <label>
-      Duração estimada (dias)
-      <input type="number" min="1" formControlName="duration" placeholder="3" />
+      Preço custo (R$)
+      <input type="number" step="0.01" formControlName="costPrice" placeholder="280,00" />
     </label>
     <label>
-      Preço base (R$)
-      <input type="number" step="0.01" formControlName="basePrice" placeholder="250,00" />
+      Preço venda (R$)
+      <input type="number" step="0.01" formControlName="salePrice" placeholder="420,00" />
     </label>
     <label>
       Status
@@ -20,15 +20,15 @@
       </select>
     </label>
     <label class="full">
-      Descrição detalhada
-      <textarea rows="3" formControlName="description" placeholder="Etapas e observações do serviço"></textarea>
+      Descrição
+      <textarea rows="3" formControlName="description" placeholder="Notas e regras da tabela"></textarea>
     </label>
   </section>
 
   <div class="form-actions">
     <button type="submit" [disabled]="loading">
       <span class="spinner" *ngIf="loading" aria-hidden="true"></span>
-      {{ mode === 'edit' ? 'Salvar alterações' : 'Salvar serviço' }}
+      {{ mode === 'edit' ? 'Salvar alterações' : 'Salvar tabela' }}
     </button>
     <button type="button" class="ghost" (click)="handleCancel()" [disabled]="loading">Cancelar</button>
   </div>

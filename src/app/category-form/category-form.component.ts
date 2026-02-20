@@ -17,7 +17,6 @@ export class CategoryFormComponent implements OnChanges {
 
   protected readonly form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
-    type: ['alianca', Validators.required],
     description: [''],
     status: [CategoryStatus.Ativo, Validators.required]
   });
@@ -54,7 +53,6 @@ export class CategoryFormComponent implements OnChanges {
   private resetForm(): void {
     this.form.reset({
       name: '',
-      type: 'alianca',
       description: '',
       status: CategoryStatus.Ativo
     });
@@ -63,7 +61,6 @@ export class CategoryFormComponent implements OnChanges {
 
 export interface CategoryFormValue {
   name: string;
-  type: string;
   description?: string | null;
   status: CategoryStatus;
 }

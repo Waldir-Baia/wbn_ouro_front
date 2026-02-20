@@ -6,6 +6,7 @@ import { CategoryListComponent } from './category-list/category-list.component';
 import { ServiceListComponent } from './service-list/service-list.component';
 import { MaterialListComponent } from './material-list/material-list.component';
 import { OrcamentoListComponent } from './orcamento-list/orcamento-list.component';
+import { TabelaPrecoListComponent } from './tabela-preco-list/tabela-preco-list.component';
 
 export const routes: Routes = [
   {
@@ -31,6 +32,10 @@ export const routes: Routes = [
   {
     path: 'cadastro/materias-primas',
     component: MaterialListComponent
+  },
+  {
+    path: 'cadastro/tabelas-preco',
+    component: TabelaPrecoListComponent
   },
   {
     path: 'producao/orcamentos',

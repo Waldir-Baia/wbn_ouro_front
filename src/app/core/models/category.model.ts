@@ -5,7 +5,6 @@ export enum CategoryStatus {
 
 export interface CategoryInput {
   nome: string;
-  tipo: string;
   descricao?: string | null;
   status: CategoryStatus;
 }

@@ -5,13 +5,11 @@ export enum MaterialStatus {
 
 export interface MaterialInput {
   nome: string;
-  categoria: string;
   fornecedor?: string | null;
   unidade: string;
   estoqueAtual: number;
   estoqueMinimo: number;
   custoPorUnidade: number;
-  leadTimeDias?: number | null;
   descricao?: string | null;
   status: MaterialStatus;
 }

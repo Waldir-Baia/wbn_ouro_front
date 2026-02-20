@@ -3,10 +3,11 @@ export interface PieceInput {
   nome: string;
   colecao?: string | null;
   categoria: string;
-  metalPrincipal: string;
+  tabelaPreco: string;
   pesoEstimadoGramas?: number | null;
   pedraPrincipal?: string | null;
   precoBase: number;
+  valorMaoDeObra: number;
   prazoProducaoDias?: number | null;
   situacaoEstoque: StockStatus;
   observacoes?: string | null;

@@ -204,7 +204,6 @@ export class CategoryListComponent {
   private mapToFormValue(category: CategoryViewModel): CategoryFormValue {
     return {
       name: category.nome ?? '',
-      type: category.tipo ?? '',
       description: category.descricao ?? '',
       status: this.parseStatus(category.status)
     };
@@ -213,7 +212,6 @@ export class CategoryListComponent {
   private mapToApiPayload(value: CategoryFormValue): CategoryInput {
     return {
       nome: value.name,
-      tipo: value.type,
       descricao: value.description || null,
       status: value.status
     };

@@ -3,30 +3,30 @@ import { Component, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CfgField } from '../core/models/cfg.model';
-import { MaterialInput, MaterialStatus, MaterialViewModel } from '../core/models/material.model';
-import { MaterialDirectoryService } from '../core/services/material-directory.service';
-import { MaterialService } from '../core/services/material.service';
-import { MaterialFormComponent, MaterialFormValue } from '../material-form/material-form.component';
+import { TabelaPrecoInput, TabelaPrecoStatus, TabelaPrecoViewModel } from '../core/models/tabela-preco.model';
+import { TabelaPrecoDirectoryService } from '../core/services/tabela-preco-directory.service';
+import { TabelaPrecoService } from '../core/services/tabela-preco.service';
+import { TabelaPrecoFormComponent, TabelaPrecoFormValue } from '../tabela-preco-form/tabela-preco-form.component';
 
 @Component({
-  selector: 'app-material-list',
+  selector: 'app-tabela-preco-list',
   standalone: true,
-  imports: [CommonModule, MaterialFormComponent],
-  templateUrl: './material-list.component.html',
-  styleUrl: './material-list.component.css'
+  imports: [CommonModule, TabelaPrecoFormComponent],
+  templateUrl: './tabela-preco-list.component.html',
+  styleUrl: './tabela-preco-list.component.css'
 })
-export class MaterialListComponent {
-  private readonly directory = inject(MaterialDirectoryService);
-  private readonly materialService = inject(MaterialService);
+export class TabelaPrecoListComponent {
+  private readonly directory = inject(TabelaPrecoDirectoryService);
+  private readonly tabelaPrecoService = inject(TabelaPrecoService);
 
   protected readonly gridColumns = signal<GridColumn[]>([]);
   protected readonly gridRows = signal<GridRow[]>([]);
   protected readonly loading = signal(false);
   protected readonly selectedRowId = signal<string | null>(null);
-  protected readonly selectedMaterial = signal<MaterialViewModel | null>(null);
+  protected readonly selectedTabela = signal<TabelaPrecoViewModel | null>(null);
   protected readonly dialogMode = signal<'create' | 'edit'>('create');
   protected readonly dialogOpen = signal(false);
-  protected readonly formInitialValue = signal<MaterialFormValue | null>(null);
+  protected readonly formInitialValue = signal<TabelaPrecoFormValue | null>(null);
   protected readonly saving = signal(false);
 
   constructor() {
@@ -38,15 +38,15 @@ export class MaterialListComponent {
   }
 
   protected get canEdit(): boolean {
-    return !!this.selectedMaterial();
+    return !!this.selectedTabela();
   }
 
   protected openDialog(mode: 'create' | 'edit'): void {
     if (mode === 'edit') {
-      if (!this.selectedRowId() || !this.selectedMaterial()) {
+      if (!this.selectedRowId() || !this.selectedTabela()) {
         return;
       }
-      this.formInitialValue.set(this.mapToFormValue(this.selectedMaterial()!));
+      this.formInitialValue.set(this.mapToFormValue(this.selectedTabela()!));
     } else {
       this.formInitialValue.set(null);
     }
@@ -64,20 +64,20 @@ export class MaterialListComponent {
       return;
     }
     this.selectedRowId.set(row.id);
-    this.selectedMaterial.set(null);
-    this.fetchMaterialDetails(row.id);
+    this.selectedTabela.set(null);
+    this.fetchTabelaDetails(row.id);
   }
 
-  protected handleFormSubmit(value: MaterialFormValue): void {
+  protected handleFormSubmit(value: TabelaPrecoFormValue): void {
     const payload = this.mapToApiPayload(value);
     const mode = this.dialogMode();
-    const selected = this.selectedMaterial();
+    const selected = this.selectedTabela();
     this.saving.set(true);
 
     const request$: Observable<void> =
       mode === 'edit' && selected
-        ? this.materialService.updateMaterial(selected.id, payload)
-        : this.materialService.createMaterial(payload).pipe(map(() => void 0));
+        ? this.tabelaPrecoService.updateTabelaPreco(selected.id, payload)
+        : this.tabelaPrecoService.createTabelaPreco(payload).pipe(map(() => void 0));
 
     request$.subscribe({
       next: () => {
@@ -86,7 +86,7 @@ export class MaterialListComponent {
         this.saving.set(false);
       },
       error: (err: unknown) => {
-        console.error('Erro ao salvar matéria-prima', err);
+        console.error('Erro ao salvar tabela de preços', err);
         this.saving.set(false);
       }
     });
@@ -102,14 +102,14 @@ export class MaterialListComponent {
       return;
     }
     this.loading.set(true);
-    this.materialService.deleteMaterial(numericId).subscribe({
+    this.tabelaPrecoService.deleteTabelaPreco(numericId).subscribe({
       next: () => {
-        this.selectedMaterial.set(null);
+        this.selectedTabela.set(null);
         this.selectedRowId.set(null);
         this.loadDirectory();
       },
       error: (err: unknown) => {
-        console.error('Erro ao excluir matéria-prima', err);
+        console.error('Erro ao excluir tabela de preços', err);
         this.loading.set(false);
       }
     });
@@ -132,24 +132,24 @@ export class MaterialListComponent {
         this.gridColumns.set(this.mapColumns(result.fields));
         this.gridRows.set(this.mapRows(result.data, result.primaryKey));
         this.selectedRowId.set(null);
-        this.selectedMaterial.set(null);
+        this.selectedTabela.set(null);
       },
       error: (err: unknown) => {
-        console.error('Erro ao carregar matérias-primas do CFG', err);
+        console.error('Erro ao carregar tabelas de preços do CFG', err);
         this.loading.set(false);
       },
       complete: () => this.loading.set(false)
     });
   }
 
-  private fetchMaterialDetails(rowId: string): void {
+  private fetchTabelaDetails(rowId: string): void {
     const numericId = Number(rowId);
     if (!Number.isFinite(numericId)) {
       return;
     }
-    this.materialService.getMaterial(numericId).subscribe({
-      next: (material) => this.selectedMaterial.set(material),
-      error: (err: unknown) => console.error('Erro ao buscar matéria-prima selecionada', err)
+    this.tabelaPrecoService.getTabelaPreco(numericId).subscribe({
+      next: (tabela) => this.selectedTabela.set(tabela),
+      error: (err: unknown) => console.error('Erro ao buscar tabela selecionada', err)
     });
   }
 
@@ -183,7 +183,9 @@ export class MaterialListComponent {
 
   private resolveRowId(item: Record<string, unknown>, keys: string[], fallbackIndex: number): string {
     for (const key of keys) {
-      if (!key) continue;
+      if (!key) {
+        continue;
+      }
       const direct = item[key];
       if (direct !== undefined && direct !== null) {
         return String(direct);
@@ -201,29 +203,23 @@ export class MaterialListComponent {
     return `row-${fallbackIndex}`;
   }
 
-  private mapToFormValue(material: MaterialViewModel): MaterialFormValue {
+  private mapToFormValue(tabela: TabelaPrecoViewModel): TabelaPrecoFormValue {
     return {
-      name: material.nome ?? '',
-      supplier: material.fornecedor ?? '',
-      unit: material.unidade ?? '',
-      stockQuantity: this.toDisplayString(material.estoqueAtual),
-      minStock: this.toDisplayString(material.estoqueMinimo),
-      costPerUnit: this.toDisplayString(material.custoPorUnidade),
-      description: material.descricao ?? '',
-      status: material.status ?? MaterialStatus.Disponivel
+      name: tabela.nome ?? '',
+      costPrice: this.toDisplayString(tabela.precoCusto),
+      salePrice: this.toDisplayString(tabela.precoVenda),
+      status: tabela.status ?? TabelaPrecoStatus.Ativo,
+      description: tabela.descricao ?? ''
     };
   }
 
-  private mapToApiPayload(value: MaterialFormValue): MaterialInput {
+  private mapToApiPayload(value: TabelaPrecoFormValue): TabelaPrecoInput {
     return {
       nome: value.name,
-      fornecedor: value.supplier || null,
-      unidade: value.unit,
-      estoqueAtual: this.toNumber(value.stockQuantity, 0),
-      estoqueMinimo: this.toNumber(value.minStock, 0),
-      custoPorUnidade: this.toNumber(value.costPerUnit, 0),
-      descricao: value.description || null,
-      status: value.status
+      precoCusto: this.toNumber(value.costPrice, 0),
+      precoVenda: this.toNumber(value.salePrice, 0),
+      status: value.status,
+      descricao: value.description || null
     };
   }
 
@@ -240,14 +236,6 @@ export class MaterialListComponent {
     }
     const parsed = Number(String(value).replace(',', '.'));
     return Number.isFinite(parsed) ? parsed : fallback;
-  }
-
-  private toNullableNumber(value?: string | number | null): number | null {
-    if (value === null || value === undefined || value === '') {
-      return null;
-    }
-    const numberValue = this.toNumber(value, NaN);
-    return Number.isFinite(numberValue) ? numberValue : null;
   }
 }
 

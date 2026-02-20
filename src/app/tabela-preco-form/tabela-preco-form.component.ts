@@ -1,32 +1,32 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ServiceStatus } from '../core/models/service.model';
+import { TabelaPrecoStatus } from '../core/models/tabela-preco.model';
 
 @Component({
-  selector: 'app-service-form',
+  selector: 'app-tabela-preco-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './service-form.component.html',
-  styleUrl: './service-form.component.css'
+  templateUrl: './tabela-preco-form.component.html',
+  styleUrl: './tabela-preco-form.component.css'
 })
-export class ServiceFormComponent implements OnChanges {
+export class TabelaPrecoFormComponent implements OnChanges {
   private readonly fb = inject(FormBuilder);
 
-  protected readonly statusEnum = ServiceStatus;
+  protected readonly statusEnum = TabelaPrecoStatus;
 
   protected readonly form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
-    description: [''],
-    duration: ['', [Validators.required, Validators.min(1)]],
-    basePrice: ['', Validators.required],
-    status: [ServiceStatus.Ativo, Validators.required]
+    costPrice: ['', [Validators.required, Validators.min(0)]],
+    salePrice: ['', [Validators.required, Validators.min(0)]],
+    status: [TabelaPrecoStatus.Ativo, Validators.required],
+    description: ['']
   });
 
-  @Input() initialValue: ServiceFormValue | null = null;
+  @Input() initialValue: TabelaPrecoFormValue | null = null;
   @Input() mode: 'create' | 'edit' = 'create';
   @Input() loading = false;
-  @Output() saved = new EventEmitter<ServiceFormValue>();
+  @Output() saved = new EventEmitter<TabelaPrecoFormValue>();
   @Output() cancelled = new EventEmitter<void>();
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -45,7 +45,7 @@ export class ServiceFormComponent implements OnChanges {
       return;
     }
 
-    this.saved.emit(this.form.getRawValue() as ServiceFormValue);
+    this.saved.emit(this.form.getRawValue() as TabelaPrecoFormValue);
   }
 
   protected handleCancel(): void {
@@ -55,18 +55,18 @@ export class ServiceFormComponent implements OnChanges {
   private resetForm(): void {
     this.form.reset({
       name: '',
-      description: '',
-      duration: '',
-      basePrice: '',
-      status: ServiceStatus.Ativo
+      costPrice: '',
+      salePrice: '',
+      status: TabelaPrecoStatus.Ativo,
+      description: ''
     });
   }
 }
 
-export interface ServiceFormValue {
+export interface TabelaPrecoFormValue {
   name: string;
+  costPrice: string;
+  salePrice: string;
+  status: TabelaPrecoStatus;
   description?: string | null;
-  duration: string;
-  basePrice: string;
-  status: ServiceStatus;
 }

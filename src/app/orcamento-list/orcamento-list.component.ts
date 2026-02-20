@@ -86,7 +86,7 @@ export class OrcamentoListComponent {
         this.saving.set(false);
       },
       error: (err: unknown) => {
-        console.error('Erro ao salvar orÁamento', err);
+        console.error('Erro ao salvar or√ßamento', err);
         this.saving.set(false);
       }
     });
@@ -109,7 +109,7 @@ export class OrcamentoListComponent {
         this.loadDirectory();
       },
       error: (err: unknown) => {
-        console.error('Erro ao excluir orÁamento', err);
+        console.error('Erro ao excluir or√ßamento', err);
         this.loading.set(false);
       }
     });
@@ -120,7 +120,7 @@ export class OrcamentoListComponent {
       return '-';
     }
     if (typeof value === 'boolean') {
-      return value ? 'Sim' : 'N„o';
+      return value ? 'Sim' : 'N√£o';
     }
     return String(value);
   }
@@ -135,7 +135,7 @@ export class OrcamentoListComponent {
         this.selectedOrcamento.set(null);
       },
       error: (err: unknown) => {
-        console.error('Erro ao carregar orÁamentos do CFG', err);
+        console.error('Erro ao carregar or√ßamentos do CFG', err);
         this.loading.set(false);
       },
       complete: () => this.loading.set(false)
@@ -149,7 +149,7 @@ export class OrcamentoListComponent {
     }
     this.orcamentoService.getOrcamento(numericId).subscribe({
       next: (orcamento) => this.selectedOrcamento.set(orcamento),
-      error: (err: unknown) => console.error('Erro ao buscar orÁamento selecionado', err)
+      error: (err: unknown) => console.error('Erro ao buscar or√ßamento selecionado', err)
     });
   }
 

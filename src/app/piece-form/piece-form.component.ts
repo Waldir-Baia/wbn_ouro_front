@@ -20,10 +20,11 @@ export class PieceFormComponent implements OnChanges {
     name: ['', [Validators.required, Validators.minLength(3)]],
     collection: [''],
     category: ['aneis', Validators.required],
-    metal: ['ouro-amarelo', Validators.required],
+    priceTable: ['', Validators.required],
     weight: [''],
     stone: [''],
     basePrice: ['', Validators.required],
+    laborValue: ['', [Validators.required, Validators.min(0)]],
     productionTime: ['', Validators.required],
     stock: [StockStatus.Disponivel, Validators.required],
     notes: ['']
@@ -64,10 +65,11 @@ export class PieceFormComponent implements OnChanges {
       name: '',
       collection: '',
       category: 'aneis',
-      metal: 'ouro-amarelo',
+      priceTable: '',
       weight: '',
       stone: '',
       basePrice: '',
+      laborValue: '',
       productionTime: '',
       stock: StockStatus.Disponivel,
       notes: ''
@@ -80,10 +82,11 @@ export interface PieceFormValue {
   name: string;
   collection?: string | null;
   category: string;
-  metal: string;
+  priceTable: string;
   weight?: string | null;
   stone?: string | null;
   basePrice: string;
+  laborValue: string;
   productionTime: string;
   stock: StockStatus;
   notes?: string | null;

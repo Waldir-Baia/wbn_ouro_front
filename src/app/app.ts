@@ -23,19 +23,18 @@ export class App {
       title: 'Cadastro',
       items: [
         { label: 'Clientes', route: '/cadastro/clientes' },
-        { label: 'Peças & Modelos', route: '/cadastro/pecas' },
-        { label: 'Categorias', route: '/cadastro/categorias' },
-        { label: 'Serviços', route: '/cadastro/servicos' },
+        { label: 'Tabelas de Preços', route: '/cadastro/tabelas-preco' },
         { label: 'Matéria-prima', route: '/cadastro/materias-primas' },
-        { label: 'Fornecedores', route: '/cadastro/fornecedores' },
-        { label: 'Tabelas de preço', route: '/cadastro/tabelas-preco' }
+        { label: 'Serviços', route: '/cadastro/servicos' },
+        { label: 'Categorias', route: '/cadastro/categorias' },
+        { label: 'Produto', route: '/cadastro/pecas' }
       ]
     },
     {
       title: 'Produção',
       items: [
         { label: 'Orçamentos', route: '/producao/orcamentos' },
-        { label: 'Ordens de Serviço', route: '/producao/ordens-servico' },
+        { label: 'Ordens de Serviço', route: '/producao/ordens-servico' }
       ]
     },
     {
@@ -80,7 +79,7 @@ export class App {
         { label: 'Perfis & Usuários', route: '/configuracoes/usuarios' },
         { label: 'Permissões', route: '/configuracoes/permissoes' },
         { label: 'Parâmetros de Metais e Pedras', route: '/configuracoes/parametros' },
-        { label: 'Integrações', route: '/configuracoes/integrações' },
+        { label: 'Integrações', route: '/configuracoes/integracoes' },
         { label: 'Preferências do Sistema', route: '/configuracoes/preferencias' }
       ]
     }

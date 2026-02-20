@@ -1,10 +1,10 @@
-<section class="orcamento-table">
-  <header class="orcamento-table__header">
+<section class="tabela-preco-table">
+  <header class="tabela-preco-table__header">
     <div>
-      <p>Orçamentos</p>
-      <h2>Propostas em andamento</h2>
+      <p>Tabelas de preços</p>
+      <h2>Configuração de preços</h2>
     </div>
-    <div class="orcamento-actions">
+    <div class="tabela-preco-actions">
       <button type="button" class="primary" (click)="openDialog('create')">Criar</button>
       <button type="button" class="ghost" (click)="openDialog('edit')" [disabled]="!canEdit">Editar</button>
       <button type="button" class="danger" (click)="deleteSelected()" [disabled]="!hasRowSelection">Excluir</button>
@@ -44,20 +44,20 @@
 </section>
 
 @if (dialogOpen()) {
-  <div class="orcamento-dialog" role="dialog" aria-modal="true">
-    <div class="orcamento-dialog__backdrop" (click)="closeDialog()"></div>
-    <div class="orcamento-dialog__panel">
+  <div class="tabela-preco-dialog" role="dialog" aria-modal="true">
+    <div class="tabela-preco-dialog__backdrop" (click)="closeDialog()"></div>
+    <div class="tabela-preco-dialog__panel">
       <header>
         <div>
           <p>{{ dialogMode() === 'create' ? 'Cadastrar' : 'Editar' }}</p>
-          <h3>{{ dialogMode() === 'create' ? 'Novo orçamento' : 'Editar orçamento' }}</h3>
+          <h3>{{ dialogMode() === 'create' ? 'Nova tabela de preços' : 'Editar tabela de preços' }}</h3>
         </div>
         <button type="button" class="icon" (click)="closeDialog()" aria-label="Fechar dialog">
           &times;
         </button>
       </header>
       <div class="dialog-body">
-        <app-orcamento-form
+        <app-tabela-preco-form
           [initialValue]="formInitialValue()"
           [mode]="dialogMode()"
           [loading]="saving()"

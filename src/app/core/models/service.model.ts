@@ -5,7 +5,6 @@ export enum ServiceStatus {
 
 export interface ServiceInput {
   nome: string;
-  categoria: string;
   descricao?: string | null;
   duracaoDias: number;
   precoBase: number;

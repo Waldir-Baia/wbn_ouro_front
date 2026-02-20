@@ -204,7 +204,6 @@ export class ServiceListComponent {
   private mapToFormValue(service: ServiceViewModel): ServiceFormValue {
     return {
       name: service.nome ?? '',
-      category: service.categoria ?? '',
       description: service.descricao ?? '',
       duration: String(service.duracaoDias ?? ''),
       basePrice: service.precoBase != null ? String(service.precoBase) : '',
@@ -215,7 +214,6 @@ export class ServiceListComponent {
   private mapToApiPayload(value: ServiceFormValue): ServiceInput {
     return {
       nome: value.name,
-      categoria: value.category,
       descricao: value.description || null,
       duracaoDias: this.toNumber(value.duration, 1),
       precoBase: this.toNumber(value.basePrice, 0),

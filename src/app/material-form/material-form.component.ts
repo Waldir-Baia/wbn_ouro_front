@@ -17,13 +17,11 @@ export class MaterialFormComponent implements OnChanges {
 
   protected readonly form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
-    category: ['metal', Validators.required],
     supplier: [''],
     unit: ['g', Validators.required],
     stockQuantity: ['', Validators.required],
     minStock: ['', Validators.required],
     costPerUnit: ['', Validators.required],
-    leadTime: [''],
     description: [''],
     status: [MaterialStatus.Disponivel, Validators.required]
   });
@@ -60,13 +58,11 @@ export class MaterialFormComponent implements OnChanges {
   private resetForm(): void {
     this.form.reset({
       name: '',
-      category: 'metal',
       supplier: '',
       unit: 'g',
       stockQuantity: '',
       minStock: '',
       costPerUnit: '',
-      leadTime: '',
       description: '',
       status: MaterialStatus.Disponivel
     });
@@ -75,13 +71,11 @@ export class MaterialFormComponent implements OnChanges {
 
 export interface MaterialFormValue {
   name: string;
-  category: string;
   supplier?: string | null;
   unit: string;
   stockQuantity: string;
   minStock: string;
   costPerUnit: string;
-  leadTime?: string | null;
   description?: string | null;
   status: MaterialStatus;
 }
