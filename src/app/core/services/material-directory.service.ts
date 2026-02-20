@@ -9,7 +9,7 @@ export class MaterialDirectoryService {
   private readonly cfgApi = inject(CfgApiService);
 
   load(page = 1, pageSize = 50, extra?: Partial<CfgQueryInput>): Observable<CfgQueryResult> {
-    return this.cfgApi.query(CfgIdentifier.MateriasPrimasGrid, {
+    return this.cfgApi.query(CfgIdentifier.MateriaPrimaGrid, {
       page,
       pageSize,
       ...extra

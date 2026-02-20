@@ -61,6 +61,7 @@
           [initialValue]="formInitialValue()"
           [mode]="dialogMode()"
           [loading]="saving()"
+          [priceTables]="priceTables()"
           (saved)="handleFormSubmit($event)"
           (cancelled)="closeDialog()"
         />

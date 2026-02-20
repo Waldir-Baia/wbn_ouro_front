@@ -9,7 +9,7 @@ export class ServiceDirectoryService {
   private readonly cfgApi = inject(CfgApiService);
 
   load(page = 1, pageSize = 50, extra?: Partial<CfgQueryInput>): Observable<CfgQueryResult> {
-    return this.cfgApi.query(CfgIdentifier.ServicosGrid, {
+    return this.cfgApi.query(CfgIdentifier.ServicoGrid, {
       page,
       pageSize,
       ...extra

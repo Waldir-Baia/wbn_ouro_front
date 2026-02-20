@@ -27,7 +27,14 @@
     </label>
     <label>
       Tabela de Preço
-      <input type="text" formControlName="priceTable" placeholder="Tabela Ouro 2026" />
+      <select formControlName="priceTableId">
+        <option [ngValue]="null">Selecione uma tabela</option>
+        @for (table of priceTables; track table.id) {
+          <option [ngValue]="table.id">
+            {{ table.id }} - {{ table.descricao || '-' }}
+          </option>
+        }
+      </select>
     </label>
     <label>
       Status

@@ -6,6 +6,8 @@ import { CfgField } from '../core/models/cfg.model';
 import { MaterialInput, MaterialStatus, MaterialViewModel } from '../core/models/material.model';
 import { MaterialDirectoryService } from '../core/services/material-directory.service';
 import { MaterialService } from '../core/services/material.service';
+import { TabelaPrecoService } from '../core/services/tabela-preco.service';
+import { TabelaPrecoViewModel } from '../core/models/tabela-preco.model';
 import { MaterialFormComponent, MaterialFormValue } from '../material-form/material-form.component';
 
 @Component({
@@ -18,9 +20,11 @@ import { MaterialFormComponent, MaterialFormValue } from '../material-form/mater
 export class MaterialListComponent {
   private readonly directory = inject(MaterialDirectoryService);
   private readonly materialService = inject(MaterialService);
+  private readonly tabelaPrecoService = inject(TabelaPrecoService);
 
   protected readonly gridColumns = signal<GridColumn[]>([]);
   protected readonly gridRows = signal<GridRow[]>([]);
+  protected readonly priceTables = signal<TabelaPrecoViewModel[]>([]);
   protected readonly loading = signal(false);
   protected readonly selectedRowId = signal<string | null>(null);
   protected readonly selectedMaterial = signal<MaterialViewModel | null>(null);
@@ -31,6 +35,7 @@ export class MaterialListComponent {
 
   constructor() {
     this.loadDirectory();
+    this.loadPriceTables();
   }
 
   protected get hasRowSelection(): boolean {
@@ -142,6 +147,13 @@ export class MaterialListComponent {
     });
   }
 
+  private loadPriceTables(): void {
+    this.tabelaPrecoService.getAllTabelasPreco().subscribe({
+      next: (items) => this.priceTables.set(items),
+      error: (err: unknown) => console.error('Erro ao carregar tabelas de preço', err)
+    });
+  }
+
   private fetchMaterialDetails(rowId: string): void {
     const numericId = Number(rowId);
     if (!Number.isFinite(numericId)) {
@@ -208,7 +220,7 @@ export class MaterialListComponent {
       unit: material.unidade ?? '',
       stockQuantity: this.toDisplayString(material.estoqueAtual),
       minStock: this.toDisplayString(material.estoqueMinimo),
-      priceTable: material.tabelaPreco ?? '',
+      priceTableId: material.tabelaPrecoId ?? null,
       description: material.descricao ?? '',
       status: material.status ?? MaterialStatus.Disponivel
     };
@@ -221,7 +233,7 @@ export class MaterialListComponent {
       unidade: value.unit,
       estoqueAtual: this.toNumber(value.stockQuantity, 0),
       estoqueMinimo: this.toNumber(value.minStock, 0),
-      tabelaPreco: value.priceTable,
+      tabelaPrecoId: value.priceTableId,
       descricao: value.description || null,
       status: value.status
     };
@@ -240,14 +252,6 @@ export class MaterialListComponent {
     }
     const parsed = Number(String(value).replace(',', '.'));
     return Number.isFinite(parsed) ? parsed : fallback;
-  }
-
-  private toNullableNumber(value?: string | number | null): number | null {
-    if (value === null || value === undefined || value === '') {
-      return null;
-    }
-    const numberValue = this.toNumber(value, NaN);
-    return Number.isFinite(numberValue) ? numberValue : null;
   }
 }
 

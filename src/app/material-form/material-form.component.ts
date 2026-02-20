@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialStatus } from '../core/models/material.model';
+import { TabelaPrecoViewModel } from '../core/models/tabela-preco.model';
 
 @Component({
   selector: 'app-material-form',
@@ -21,7 +22,7 @@ export class MaterialFormComponent implements OnChanges {
     unit: ['g', Validators.required],
     stockQuantity: ['', Validators.required],
     minStock: ['', Validators.required],
-    priceTable: ['', Validators.required],
+    priceTableId: [null as number | null, Validators.required],
     description: [''],
     status: [MaterialStatus.Disponivel, Validators.required]
   });
@@ -29,6 +30,7 @@ export class MaterialFormComponent implements OnChanges {
   @Input() initialValue: MaterialFormValue | null = null;
   @Input() mode: 'create' | 'edit' = 'create';
   @Input() loading = false;
+  @Input() priceTables: TabelaPrecoViewModel[] = [];
   @Output() saved = new EventEmitter<MaterialFormValue>();
   @Output() cancelled = new EventEmitter<void>();
 
@@ -62,7 +64,7 @@ export class MaterialFormComponent implements OnChanges {
       unit: 'g',
       stockQuantity: '',
       minStock: '',
-      priceTable: '',
+      priceTableId: null,
       description: '',
       status: MaterialStatus.Disponivel
     });
@@ -75,7 +77,7 @@ export interface MaterialFormValue {
   unit: string;
   stockQuantity: string;
   minStock: string;
-  priceTable: string;
+  priceTableId: number | null;
   description?: string | null;
   status: MaterialStatus;
 }

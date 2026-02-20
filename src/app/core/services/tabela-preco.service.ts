@@ -9,6 +9,10 @@ export class TabelaPrecoService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/tabelas-preco`;
 
+  getAllTabelasPreco(): Observable<TabelaPrecoViewModel[]> {
+    return this.http.get<TabelaPrecoViewModel[]>(this.baseUrl);
+  }
+
   getTabelaPreco(id: number): Observable<TabelaPrecoViewModel> {
     return this.http.get<TabelaPrecoViewModel>(`${this.baseUrl}/${id}`);
   }
