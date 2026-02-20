@@ -9,7 +9,7 @@ export interface MaterialInput {
   unidade: string;
   estoqueAtual: number;
   estoqueMinimo: number;
-  custoPorUnidade: number;
+  tabelaPreco: string;
   descricao?: string | null;
   status: MaterialStatus;
 }

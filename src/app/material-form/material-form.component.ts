@@ -21,7 +21,7 @@ export class MaterialFormComponent implements OnChanges {
     unit: ['g', Validators.required],
     stockQuantity: ['', Validators.required],
     minStock: ['', Validators.required],
-    costPerUnit: ['', Validators.required],
+    priceTable: ['', Validators.required],
     description: [''],
     status: [MaterialStatus.Disponivel, Validators.required]
   });
@@ -62,7 +62,7 @@ export class MaterialFormComponent implements OnChanges {
       unit: 'g',
       stockQuantity: '',
       minStock: '',
-      costPerUnit: '',
+      priceTable: '',
       description: '',
       status: MaterialStatus.Disponivel
     });
@@ -75,7 +75,7 @@ export interface MaterialFormValue {
   unit: string;
   stockQuantity: string;
   minStock: string;
-  costPerUnit: string;
+  priceTable: string;
   description?: string | null;
   status: MaterialStatus;
 }

@@ -208,7 +208,7 @@ export class MaterialListComponent {
       unit: material.unidade ?? '',
       stockQuantity: this.toDisplayString(material.estoqueAtual),
       minStock: this.toDisplayString(material.estoqueMinimo),
-      costPerUnit: this.toDisplayString(material.custoPorUnidade),
+      priceTable: material.tabelaPreco ?? '',
       description: material.descricao ?? '',
       status: material.status ?? MaterialStatus.Disponivel
     };
@@ -221,7 +221,7 @@ export class MaterialListComponent {
       unidade: value.unit,
       estoqueAtual: this.toNumber(value.stockQuantity, 0),
       estoqueMinimo: this.toNumber(value.minStock, 0),
-      custoPorUnidade: this.toNumber(value.costPerUnit, 0),
+      tabelaPreco: value.priceTable,
       descricao: value.description || null,
       status: value.status
     };
