@@ -9,6 +9,10 @@ export class MaterialService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/materias-primas`;
 
+  getAllMaterials(): Observable<MaterialViewModel[]> {
+    return this.http.get<MaterialViewModel[]>(this.baseUrl);
+  }
+
   getMaterial(id: number): Observable<MaterialViewModel> {
     return this.http.get<MaterialViewModel>(`${this.baseUrl}/${id}`);
   }

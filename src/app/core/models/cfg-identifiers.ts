@@ -1,6 +1,6 @@
 export enum CfgIdentifier {
   ClientesGrid = 'clientes-grid',
-  PecasGrid = 'pecas-modelos-grid',
+  ProdutosGrid = 'produtos-grid',
   TipoCategoriaGrid = 'tipo-categoria-grid',
   ServicoGrid = 'servico-grid',
   MateriaPrimaGrid = 'materia-prima-grid',

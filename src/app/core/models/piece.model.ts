@@ -1,13 +1,10 @@
 export interface PieceInput {
   codigoInterno: string;
   nome: string;
-  colecao?: string | null;
-  categoria: string;
-  tabelaPreco: string;
-  pesoEstimadoGramas?: number | null;
+  categoriaId: number;
+  tabelaPrecoId: number;
+  materiaPrimaId: number;
   pedraPrincipal?: string | null;
-  precoBase: number;
-  valorMaoDeObra: number;
   prazoProducaoDias?: number | null;
   situacaoEstoque: StockStatus;
   observacoes?: string | null;
@@ -15,8 +12,8 @@ export interface PieceInput {
 
 export interface PieceViewModel extends PieceInput {
   id: number;
-  criadoEm: string;
-  atualizadoEm: string;
+  criadoEm?: string;
+  atualizadoEm?: string;
 }
 
 export enum StockStatus {

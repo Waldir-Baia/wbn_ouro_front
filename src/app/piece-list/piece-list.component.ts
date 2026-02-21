@@ -2,10 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { CategoryViewModel } from '../core/models/category.model';
 import { CfgField } from '../core/models/cfg.model';
+import { MaterialViewModel } from '../core/models/material.model';
 import { PieceInput, PieceViewModel, StockStatus } from '../core/models/piece.model';
+import { TabelaPrecoViewModel } from '../core/models/tabela-preco.model';
+import { CategoryService } from '../core/services/category.service';
+import { MaterialService } from '../core/services/material.service';
 import { PieceDirectoryService } from '../core/services/piece-directory.service';
 import { PieceService } from '../core/services/piece.service';
+import { TabelaPrecoService } from '../core/services/tabela-preco.service';
 import { PieceFormComponent, PieceFormValue } from '../piece-form/piece-form.component';
 
 @Component({
@@ -18,9 +24,15 @@ import { PieceFormComponent, PieceFormValue } from '../piece-form/piece-form.com
 export class PieceListComponent {
   private readonly directory = inject(PieceDirectoryService);
   private readonly pieceService = inject(PieceService);
+  private readonly categoryService = inject(CategoryService);
+  private readonly tabelaPrecoService = inject(TabelaPrecoService);
+  private readonly materialService = inject(MaterialService);
 
   protected readonly gridColumns = signal<GridColumn[]>([]);
   protected readonly gridRows = signal<GridRow[]>([]);
+  protected readonly categories = signal<CategoryViewModel[]>([]);
+  protected readonly priceTables = signal<TabelaPrecoViewModel[]>([]);
+  protected readonly materials = signal<MaterialViewModel[]>([]);
   protected readonly loading = signal(false);
   protected readonly selectedRowId = signal<string | null>(null);
   protected readonly selectedPiece = signal<PieceViewModel | null>(null);
@@ -31,6 +43,9 @@ export class PieceListComponent {
 
   constructor() {
     this.loadDirectory();
+    this.loadCategories();
+    this.loadPriceTables();
+    this.loadMaterials();
   }
 
   protected get hasRowSelection(): boolean {
@@ -153,6 +168,27 @@ export class PieceListComponent {
     });
   }
 
+  private loadCategories(): void {
+    this.categoryService.getAllCategories().subscribe({
+      next: (items) => this.categories.set(items),
+      error: (err: unknown) => console.error('Erro ao carregar categorias', err)
+    });
+  }
+
+  private loadPriceTables(): void {
+    this.tabelaPrecoService.getAllTabelasPreco().subscribe({
+      next: (items) => this.priceTables.set(items),
+      error: (err: unknown) => console.error('Erro ao carregar tabelas de preço', err)
+    });
+  }
+
+  private loadMaterials(): void {
+    this.materialService.getAllMaterials().subscribe({
+      next: (items) => this.materials.set(items),
+      error: (err: unknown) => console.error('Erro ao carregar matérias-primas', err)
+    });
+  }
+
   private mapColumns(fields: CfgField[]): GridColumn[] {
     return fields
       .filter((field) => field.isVisible)
@@ -205,13 +241,10 @@ export class PieceListComponent {
     return {
       code: piece.codigoInterno ?? '',
       name: piece.nome ?? '',
-      collection: piece.colecao ?? '',
-      category: piece.categoria ?? '',
-      priceTable: piece.tabelaPreco ?? '',
-      weight: piece.pesoEstimadoGramas != null ? String(piece.pesoEstimadoGramas) : '',
+      categoryId: piece.categoriaId ?? null,
+      priceTableId: piece.tabelaPrecoId ?? null,
+      rawMaterialId: piece.materiaPrimaId ?? null,
       stone: piece.pedraPrincipal ?? '',
-      basePrice: piece.precoBase != null ? String(piece.precoBase) : '',
-      laborValue: piece.valorMaoDeObra != null ? String(piece.valorMaoDeObra) : '',
       productionTime: piece.prazoProducaoDias != null ? String(piece.prazoProducaoDias) : '',
       stock: this.resolveStock(piece.situacaoEstoque),
       notes: piece.observacoes ?? ''
@@ -222,13 +255,10 @@ export class PieceListComponent {
     return {
       codigoInterno: value.code,
       nome: value.name,
-      colecao: value.collection || null,
-      categoria: value.category,
-      tabelaPreco: value.priceTable,
-      pesoEstimadoGramas: this.toNullableNumber(value.weight),
+      categoriaId: this.toRequiredId(value.categoryId),
+      tabelaPrecoId: this.toRequiredId(value.priceTableId),
+      materiaPrimaId: this.toRequiredId(value.rawMaterialId),
       pedraPrincipal: value.stone || null,
-      precoBase: this.toNumber(value.basePrice, 0),
-      valorMaoDeObra: this.toNumber(value.laborValue, 0),
       prazoProducaoDias: this.toNullableNumber(value.productionTime),
       situacaoEstoque: value.stock,
       observacoes: value.notes || null
@@ -266,6 +296,13 @@ export class PieceListComponent {
     }
     const numberValue = this.toNumber(value as string | number, NaN);
     return Number.isFinite(numberValue) ? numberValue : null;
+  }
+
+  private toRequiredId(value: number | null): number {
+    if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+      return value;
+    }
+    return 0;
   }
 }
 

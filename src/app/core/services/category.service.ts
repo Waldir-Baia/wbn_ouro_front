@@ -9,6 +9,10 @@ export class CategoryService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/tipos-categorias`;
 
+  getAllCategories(): Observable<CategoryViewModel[]> {
+    return this.http.get<CategoryViewModel[]>(this.baseUrl);
+  }
+
   getCategory(id: number): Observable<CategoryViewModel> {
     return this.http.get<CategoryViewModel>(`${this.baseUrl}/${id}`);
   }

@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CategoryViewModel } from '../core/models/category.model';
+import { MaterialViewModel } from '../core/models/material.model';
 import { StockStatus } from '../core/models/piece.model';
+import { TabelaPrecoViewModel } from '../core/models/tabela-preco.model';
 
 @Component({
   selector: 'app-piece-form',
@@ -18,13 +21,10 @@ export class PieceFormComponent implements OnChanges {
   protected readonly form = this.fb.group({
     code: ['', Validators.required],
     name: ['', [Validators.required, Validators.minLength(3)]],
-    collection: [''],
-    category: ['aneis', Validators.required],
-    priceTable: ['', Validators.required],
-    weight: [''],
+    categoryId: [null as number | null, Validators.required],
+    priceTableId: [null as number | null, Validators.required],
+    rawMaterialId: [null as number | null, Validators.required],
     stone: [''],
-    basePrice: ['', Validators.required],
-    laborValue: ['', [Validators.required, Validators.min(0)]],
     productionTime: ['', Validators.required],
     stock: [StockStatus.Disponivel, Validators.required],
     notes: ['']
@@ -33,6 +33,9 @@ export class PieceFormComponent implements OnChanges {
   @Input() initialValue: PieceFormValue | null = null;
   @Input() mode: 'create' | 'edit' = 'create';
   @Input() loading = false;
+  @Input() categories: CategoryViewModel[] = [];
+  @Input() priceTables: TabelaPrecoViewModel[] = [];
+  @Input() materials: MaterialViewModel[] = [];
   @Output() saved = new EventEmitter<PieceFormValue>();
   @Output() cancelled = new EventEmitter<void>();
 
@@ -63,13 +66,10 @@ export class PieceFormComponent implements OnChanges {
     this.form.reset({
       code: '',
       name: '',
-      collection: '',
-      category: 'aneis',
-      priceTable: '',
-      weight: '',
+      categoryId: null,
+      priceTableId: null,
+      rawMaterialId: null,
       stone: '',
-      basePrice: '',
-      laborValue: '',
       productionTime: '',
       stock: StockStatus.Disponivel,
       notes: ''
@@ -80,13 +80,10 @@ export class PieceFormComponent implements OnChanges {
 export interface PieceFormValue {
   code: string;
   name: string;
-  collection?: string | null;
-  category: string;
-  priceTable: string;
-  weight?: string | null;
+  categoryId: number | null;
+  priceTableId: number | null;
+  rawMaterialId: number | null;
   stone?: string | null;
-  basePrice: string;
-  laborValue: string;
   productionTime: string;
   stock: StockStatus;
   notes?: string | null;

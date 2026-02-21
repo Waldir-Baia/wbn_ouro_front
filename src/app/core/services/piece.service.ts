@@ -7,7 +7,7 @@ import { PieceInput, PieceViewModel } from '../models/piece.model';
 @Injectable({ providedIn: 'root' })
 export class PieceService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${environment.apiUrl}/pecas-modelos`;
+  private readonly baseUrl = `${environment.apiUrl}/produtos`;
 
   getPiece(id: number): Observable<PieceViewModel> {
     return this.http.get<PieceViewModel>(`${this.baseUrl}/${id}`);

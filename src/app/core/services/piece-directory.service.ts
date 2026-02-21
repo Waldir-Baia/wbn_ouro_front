@@ -9,7 +9,7 @@ export class PieceDirectoryService {
   private readonly cfgApi = inject(CfgApiService);
 
   load(page = 1, pageSize = 50, extra?: Partial<CfgQueryInput>): Observable<CfgQueryResult> {
-    return this.cfgApi.query(CfgIdentifier.PecasGrid, {
+    return this.cfgApi.query(CfgIdentifier.ProdutosGrid, {
       page,
       pageSize,
       ...extra
