@@ -2,10 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ClienteViewModel } from '../core/models/cliente.model';
 import { CfgField } from '../core/models/cfg.model';
 import { OrcamentoInput, OrcamentoStatus, OrcamentoViewModel } from '../core/models/orcamento.model';
+import { PieceViewModel } from '../core/models/piece.model';
+import { ServiceViewModel } from '../core/models/service.model';
+import { ClienteService } from '../core/services/cliente.service';
 import { OrcamentoDirectoryService } from '../core/services/orcamento-directory.service';
 import { OrcamentoService } from '../core/services/orcamento.service';
+import { PieceService } from '../core/services/piece.service';
+import { ServiceService } from '../core/services/service.service';
 import { OrcamentoFormComponent, OrcamentoFormValue } from '../orcamento-form/orcamento-form.component';
 
 @Component({
@@ -18,9 +24,15 @@ import { OrcamentoFormComponent, OrcamentoFormValue } from '../orcamento-form/or
 export class OrcamentoListComponent {
   private readonly directory = inject(OrcamentoDirectoryService);
   private readonly orcamentoService = inject(OrcamentoService);
+  private readonly clienteService = inject(ClienteService);
+  private readonly serviceService = inject(ServiceService);
+  private readonly pieceService = inject(PieceService);
 
   protected readonly gridColumns = signal<GridColumn[]>([]);
   protected readonly gridRows = signal<GridRow[]>([]);
+  protected readonly clients = signal<ClienteViewModel[]>([]);
+  protected readonly services = signal<ServiceViewModel[]>([]);
+  protected readonly products = signal<PieceViewModel[]>([]);
   protected readonly loading = signal(false);
   protected readonly selectedRowId = signal<string | null>(null);
   protected readonly selectedOrcamento = signal<OrcamentoViewModel | null>(null);
@@ -31,6 +43,9 @@ export class OrcamentoListComponent {
 
   constructor() {
     this.loadDirectory();
+    this.loadClientOptions();
+    this.loadServiceOptions();
+    this.loadProductOptions();
   }
 
   protected get hasRowSelection(): boolean {
@@ -153,6 +168,27 @@ export class OrcamentoListComponent {
     });
   }
 
+  private loadClientOptions(): void {
+    this.clienteService.getClientes().subscribe({
+      next: (items) => this.clients.set(items),
+      error: (err: unknown) => console.error('Erro ao carregar clientes para orçamento', err)
+    });
+  }
+
+  private loadServiceOptions(): void {
+    this.serviceService.getServices().subscribe({
+      next: (items) => this.services.set(items),
+      error: (err: unknown) => console.error('Erro ao carregar serviços para orçamento', err)
+    });
+  }
+
+  private loadProductOptions(): void {
+    this.pieceService.getProdutos().subscribe({
+      next: (items) => this.products.set(items),
+      error: (err: unknown) => console.error('Erro ao carregar produtos para orçamento', err)
+    });
+  }
+
   private mapColumns(fields: CfgField[]): GridColumn[] {
     return fields
       .filter((field) => field.isVisible)
@@ -206,7 +242,10 @@ export class OrcamentoListComponent {
   private mapToFormValue(orcamento: OrcamentoViewModel): OrcamentoFormValue {
     return {
       number: orcamento.numero ?? '',
-      client: orcamento.cliente ?? '',
+      clientId: this.resolveClientId(orcamento),
+      serviceId: orcamento.servicoId ?? null,
+      productId: orcamento.produtoId ?? null,
+      weightGrams: this.toDisplayString(orcamento.pesoGramas),
       issueDate: orcamento.dataEmissao ?? '',
       validUntil: orcamento.dataValidade ?? '',
       totalValue: this.toDisplayString(orcamento.valorTotal),
@@ -217,9 +256,17 @@ export class OrcamentoListComponent {
   }
 
   private mapToApiPayload(value: OrcamentoFormValue): OrcamentoInput {
+    const selectedClientId = this.toNullableId(value.clientId);
+    const selectedClient = this.clients().find((client) => client.id === selectedClientId);
+    const selectedClientName = selectedClient?.nomeCompleto || selectedClient?.nome || '';
+
     return {
       numero: value.number,
-      cliente: value.client,
+      cliente: selectedClientName,
+      clienteId: selectedClientId,
+      servicoId: this.toNullableId(value.serviceId ?? null),
+      produtoId: this.toNullableId(value.productId ?? null),
+      pesoGramas: this.toNullableNumber(value.weightGrams),
       descricao: value.description || null,
       dataEmissao: value.issueDate,
       dataValidade: value.validUntil || null,
@@ -242,6 +289,37 @@ export class OrcamentoListComponent {
     }
     const parsed = Number(String(value).replace(',', '.'));
     return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  private toNullableId(value: number | null): number | null {
+    return typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : null;
+  }
+
+  private toNullableNumber(value?: string | number | null): number | null {
+    if (value === null || value === undefined || value === '') {
+      return null;
+    }
+    const parsed = this.toNumber(value, NaN);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
+  private resolveClientId(orcamento: OrcamentoViewModel): number | null {
+    if (typeof orcamento.clienteId === 'number' && orcamento.clienteId > 0) {
+      return orcamento.clienteId;
+    }
+
+    const nomeCliente = (orcamento.cliente ?? '').trim().toLowerCase();
+    if (!nomeCliente) {
+      return null;
+    }
+
+    const matchedClient = this.clients().find((client) => {
+      const nomeCompleto = client.nomeCompleto?.trim().toLowerCase();
+      const nome = client.nome?.trim().toLowerCase();
+      return nomeCompleto === nomeCliente || nome === nomeCliente;
+    });
+
+    return matchedClient?.id ?? null;
   }
 }
 

@@ -22,6 +22,11 @@ label.full {
   grid-column: 1 / -1;
 }
 
+label small {
+  font-size: 0.75rem;
+  color: #475569;
+}
+
 input,
 select,
 textarea {

@@ -9,6 +9,10 @@ export class PieceService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/produtos`;
 
+  getProdutos(): Observable<PieceViewModel[]> {
+    return this.http.get<PieceViewModel[]>(this.baseUrl);
+  }
+
   getPiece(id: number): Observable<PieceViewModel> {
     return this.http.get<PieceViewModel>(`${this.baseUrl}/${id}`);
   }

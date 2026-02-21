@@ -4,6 +4,6 @@ export enum CfgIdentifier {
   TipoCategoriaGrid = 'tipo-categoria-grid',
   ServicoGrid = 'servico-grid',
   MateriaPrimaGrid = 'materia-prima-grid',
-  OrcamentosGrid = 'orcamentos-grid',
+  OrcamentoGrid = 'orcamento-grid',
   TabelasPrecoGrid = 'tabelas-preco-grid'
 }

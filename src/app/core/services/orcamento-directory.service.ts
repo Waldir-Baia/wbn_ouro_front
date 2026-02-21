@@ -9,7 +9,7 @@ export class OrcamentoDirectoryService {
   private readonly cfgApi = inject(CfgApiService);
 
   load(page = 1, pageSize = 50, extra?: Partial<CfgQueryInput>): Observable<CfgQueryResult> {
-    return this.cfgApi.query(CfgIdentifier.OrcamentosGrid, {
+    return this.cfgApi.query(CfgIdentifier.OrcamentoGrid, {
       page,
       pageSize,
       ...extra

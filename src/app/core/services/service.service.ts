@@ -9,6 +9,10 @@ export class ServiceService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/servicos`;
 
+  getServices(): Observable<ServiceViewModel[]> {
+    return this.http.get<ServiceViewModel[]>(this.baseUrl);
+  }
+
   getService(id: number): Observable<ServiceViewModel> {
     return this.http.get<ServiceViewModel>(`${this.baseUrl}/${id}`);
   }

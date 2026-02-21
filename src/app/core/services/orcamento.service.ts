@@ -2,12 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
-import { OrcamentoInput, OrcamentoViewModel } from '../models/orcamento.model';
+import { OrcamentoCalculoInput, OrcamentoCalculoResultado, OrcamentoInput, OrcamentoViewModel } from '../models/orcamento.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrcamentoService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/orcamentos`;
+
+  calcularCusto(payload: OrcamentoCalculoInput): Observable<OrcamentoCalculoResultado> {
+    return this.http.post<OrcamentoCalculoResultado>(`${this.baseUrl}/calcular-custo`, payload);
+  }
 
   getOrcamento(id: number): Observable<OrcamentoViewModel> {
     return this.http.get<OrcamentoViewModel>(`${this.baseUrl}/${id}`);
