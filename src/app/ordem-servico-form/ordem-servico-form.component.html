@@ -1,0 +1,70 @@
+<form class="os-form" [formGroup]="form" (ngSubmit)="submit()">
+  <section class="form-grid">
+    <label>
+      Numero da OS
+      <input type="text" formControlName="number" placeholder="OS-2026-010" />
+    </label>
+    <label>
+      Cliente
+      <input type="text" formControlName="client" placeholder="Nome do cliente" />
+    </label>
+    <label>
+      Orcamento (opcional)
+      <input type="text" formControlName="budgetNumber" placeholder="ORC-2026-003" />
+    </label>
+    <label>
+      Servico
+      <input type="text" formControlName="service" placeholder="Descricao do servico" />
+    </label>
+    <label>
+      Produto (opcional)
+      <input type="text" formControlName="product" placeholder="Produto vinculado" />
+    </label>
+    <label>
+      Responsavel
+      <input type="text" formControlName="bench" placeholder="Bancada 1" />
+    </label>
+    <label>
+      Entrada
+      <input type="date" formControlName="entryDate" />
+    </label>
+    <label>
+      Prazo
+      <input type="date" formControlName="dueDate" />
+    </label>
+    <label>
+      Prioridade
+      <select formControlName="priority">
+        <option [ngValue]="prioridadeEnum.Baixa">Baixa</option>
+        <option [ngValue]="prioridadeEnum.Normal">Normal</option>
+        <option [ngValue]="prioridadeEnum.Alta">Alta</option>
+        <option [ngValue]="prioridadeEnum.Urgente">Urgente</option>
+      </select>
+    </label>
+    <label>
+      Status
+      <select formControlName="status">
+        <option [ngValue]="statusEnum.EmAberto">Em aberto</option>
+        <option [ngValue]="statusEnum.EmProducao">Em producao</option>
+        <option [ngValue]="statusEnum.AguardandoPeca">Aguardando peca</option>
+        <option [ngValue]="statusEnum.Finalizada">Finalizada</option>
+      </select>
+    </label>
+    <label class="full">
+      Detalhes tecnicos
+      <textarea rows="3" formControlName="details" placeholder="Etapas e informacoes da producao"></textarea>
+    </label>
+    <label class="full">
+      Observacoes internas
+      <textarea rows="2" formControlName="notes" placeholder="Instrucoes para equipe"></textarea>
+    </label>
+  </section>
+
+  <div class="form-actions">
+    <button type="submit" [disabled]="loading">
+      <span class="spinner" *ngIf="loading" aria-hidden="true"></span>
+      {{ mode === 'edit' ? 'Salvar alteracoes' : 'Criar ordem de servico' }}
+    </button>
+    <button type="button" class="ghost" (click)="handleCancel()" [disabled]="loading">Cancelar</button>
+  </div>
+</form>

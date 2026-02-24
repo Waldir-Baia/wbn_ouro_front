@@ -7,6 +7,7 @@ import { ServiceListComponent } from './service-list/service-list.component';
 import { MaterialListComponent } from './material-list/material-list.component';
 import { OrcamentoListComponent } from './orcamento-list/orcamento-list.component';
 import { TabelaPrecoListComponent } from './tabela-preco-list/tabela-preco-list.component';
+import { OrdemServicoListComponent } from './ordem-servico-list/ordem-servico-list.component';
 
 export const routes: Routes = [
   {
@@ -40,6 +41,10 @@ export const routes: Routes = [
   {
     path: 'producao/orcamentos',
     component: OrcamentoListComponent
+  },
+  {
+    path: 'producao/ordens-servico',
+    component: OrdemServicoListComponent
   },
   {
     path: '**',

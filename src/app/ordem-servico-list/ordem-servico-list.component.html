@@ -1,0 +1,80 @@
+<section class="os-board">
+  <header class="os-board__header">
+    <div>
+      <p>Ordens de serviço</p>
+      <h2>Painel operacional</h2>
+    </div>
+    <div class="os-actions">
+      <button type="button" class="primary" (click)="openDialog('create')">Criar OS</button>
+      <button type="button" class="ghost" disabled>Editar</button>
+      <button type="button" class="danger" disabled>Encerrar</button>
+    </div>
+  </header>
+
+  <div class="os-kpis">
+    @for (item of indicadores(); track item.label) {
+      <article [class.critical]="item.critical">
+        <span>{{ item.label }}</span>
+        <strong>{{ item.value }}</strong>
+      </article>
+    }
+  </div>
+
+  <div class="os-grid">
+    <table>
+      <thead>
+        <tr>
+          <th>OS</th>
+          <th>Cliente</th>
+          <th>Produto / Serviço</th>
+          <th>Responsável</th>
+          <th>Prazo</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows(); track row.numero) {
+          <tr>
+            <td>{{ row.numero }}</td>
+            <td>{{ row.cliente }}</td>
+            <td>{{ row.item }}</td>
+            <td>{{ row.responsavel }}</td>
+            <td>{{ row.prazo }}</td>
+            <td>{{ row.status }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="os-next">
+    <h3>Próximos passos do módulo</h3>
+    <p>Conectar com API de OS, abrir formulário e incluir timeline de produção por etapa.</p>
+  </div>
+</section>
+
+@if (dialogOpen()) {
+  <div class="os-dialog" role="dialog" aria-modal="true">
+    <div class="os-dialog__backdrop" (click)="closeDialog()"></div>
+    <div class="os-dialog__panel">
+      <header>
+        <div>
+          <p>{{ dialogMode() === 'create' ? 'Cadastrar' : 'Editar' }}</p>
+          <h3>{{ dialogMode() === 'create' ? 'Nova ordem de servico' : 'Editar ordem de servico' }}</h3>
+        </div>
+        <button type="button" class="icon" (click)="closeDialog()" aria-label="Fechar dialog">
+          &times;
+        </button>
+      </header>
+      <div class="dialog-body">
+        <app-ordem-servico-form
+          [initialValue]="formInitialValue()"
+          [mode]="dialogMode()"
+          [loading]="saving()"
+          (saved)="handleFormSubmit($event)"
+          (cancelled)="closeDialog()"
+        />
+      </div>
+    </div>
+  </div>
+}

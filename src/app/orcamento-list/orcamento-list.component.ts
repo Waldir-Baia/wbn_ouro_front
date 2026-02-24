@@ -244,8 +244,7 @@ export class OrcamentoListComponent {
       number: orcamento.numero ?? '',
       clientId: this.resolveClientId(orcamento),
       serviceId: orcamento.servicoId ?? null,
-      productId: orcamento.produtoId ?? null,
-      weightGrams: this.toDisplayString(orcamento.pesoGramas),
+      productSelections: this.resolveProductSelections(orcamento),
       issueDate: orcamento.dataEmissao ?? '',
       validUntil: orcamento.dataValidade ?? '',
       totalValue: this.toDisplayString(orcamento.valorTotal),
@@ -257,22 +256,27 @@ export class OrcamentoListComponent {
 
   private mapToApiPayload(value: OrcamentoFormValue): OrcamentoInput {
     const selectedClientId = this.toNullableId(value.clientId);
-    const selectedClient = this.clients().find((client) => client.id === selectedClientId);
-    const selectedClientName = selectedClient?.nomeCompleto || selectedClient?.nome || '';
+    const productSelections = this.normalizeProductSelections(value.productSelections);
+    const itens = productSelections.map((item) => ({
+      pecaModeloId: item.productId,
+      pesoGramas: item.weightGrams ?? null,
+      quantidade: item.quantity ?? 1,
+      valorUnitario: item.unitPrice ?? null,
+      valorTotalItem: item.totalItem ?? null,
+      observacao: item.note?.trim() || null
+    }));
 
     return {
       numero: value.number,
-      cliente: selectedClientName,
       clienteId: selectedClientId,
       servicoId: this.toNullableId(value.serviceId ?? null),
-      produtoId: this.toNullableId(value.productId ?? null),
-      pesoGramas: this.toNullableNumber(value.weightGrams),
       descricao: value.description || null,
       dataEmissao: value.issueDate,
       dataValidade: value.validUntil || null,
       valorTotal: this.toNumber(value.totalValue, 0),
       status: value.status,
-      observacoes: value.notes || null
+      observacoes: value.notes || null,
+      itens
     };
   }
 
@@ -301,6 +305,130 @@ export class OrcamentoListComponent {
     }
     const parsed = this.toNumber(value, NaN);
     return Number.isFinite(parsed) ? parsed : null;
+  }
+
+  private toNullablePositiveNumber(value?: string | number | null): number | null {
+    const parsed = this.toNullableNumber(value);
+    if (parsed === null || parsed <= 0) {
+      return null;
+    }
+    return parsed;
+  }
+
+  private normalizeProductSelections(
+    items: Array<{
+      productId: number;
+      weightGrams?: number | null;
+      quantity?: number | null;
+      unitPrice?: number | null;
+      totalItem?: number | null;
+      note?: string | null;
+    }> | null | undefined
+  ): Array<{
+    productId: number;
+    weightGrams?: number | null;
+    quantity?: number | null;
+    unitPrice?: number | null;
+    totalItem?: number | null;
+    note?: string | null;
+  }> {
+    if (!Array.isArray(items)) {
+      return [];
+    }
+
+    const dedup = new Map<number, {
+      productId: number;
+      weightGrams?: number | null;
+      quantity?: number | null;
+      unitPrice?: number | null;
+      totalItem?: number | null;
+      note?: string | null;
+    }>();
+    for (const item of items) {
+      const productId = this.toNullableId(item.productId);
+      if (!productId) {
+        continue;
+      }
+      dedup.set(productId, {
+        productId,
+        weightGrams: this.toNullableNumber(item.weightGrams ?? null),
+        quantity: this.toNullablePositiveNumber(item.quantity ?? 1) ?? 1,
+        unitPrice: this.toNullableNumber(item.unitPrice ?? null),
+        totalItem: this.toNullableNumber(item.totalItem ?? null),
+        note: item.note?.trim() || null
+      });
+    }
+
+    return Array.from(dedup.values());
+  }
+
+  private resolveProductSelections(
+    orcamento: OrcamentoViewModel
+  ): Array<{
+    productId: number;
+    weightGrams?: number | null;
+    quantity?: number | null;
+    unitPrice?: number | null;
+    totalItem?: number | null;
+    note?: string | null;
+  }> {
+    const fromSubItems = Array.isArray(orcamento.itens) ? orcamento.itens : [];
+    if (fromSubItems.length > 0) {
+      return this.normalizeProductSelections(
+        fromSubItems.map((item) => ({
+          productId: item.pecaModeloId,
+          weightGrams: this.toNullableNumber(item.pesoGramas ?? null),
+          quantity: this.toNullablePositiveNumber(item.quantidade ?? 1) ?? 1,
+          unitPrice: this.toNullableNumber(item.valorUnitario ?? null),
+          totalItem: this.toNullableNumber(item.valorTotalItem ?? null),
+          note: item.observacao?.trim() || null
+        }))
+      );
+    }
+
+    const fromItems = Array.isArray(orcamento.produtos) ? orcamento.produtos : [];
+    if (fromItems.length > 0) {
+      return this.normalizeProductSelections(
+        fromItems.map((item) => ({
+          productId: item.produtoId,
+          weightGrams: this.toNullableNumber(item.pesoGramas ?? null),
+          quantity: this.toNullablePositiveNumber(item.quantidade ?? 1) ?? 1,
+          unitPrice: null,
+          totalItem: this.toNullableNumber(item.valorItem ?? null),
+          note: null
+        }))
+      );
+    }
+
+    const fromArrayIds = Array.isArray(orcamento.produtoIds) ? orcamento.produtoIds : [];
+    if (fromArrayIds.length > 0) {
+      return this.normalizeProductSelections(
+        fromArrayIds.map((productId) => ({
+          productId,
+          weightGrams: null,
+          quantity: 1,
+          unitPrice: null,
+          totalItem: null,
+          note: null
+        }))
+      );
+    }
+
+    const single = this.toNullableId(orcamento.produtoId ?? null);
+    if (!single) {
+      return [];
+    }
+
+    return [
+      {
+        productId: single,
+        weightGrams: this.toNullableNumber(orcamento.pesoGramas),
+        quantity: 1,
+        unitPrice: null,
+        totalItem: null,
+        note: null
+      }
+    ];
   }
 
   private resolveClientId(orcamento: OrcamentoViewModel): number | null {

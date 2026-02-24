@@ -27,21 +27,6 @@
       </select>
     </label>
     <label>
-      Produto (opcional)
-      <select formControlName="productId">
-        <option [ngValue]="null">Sem produto</option>
-        @for (product of products; track product.id) {
-          <option [ngValue]="product.id">
-            {{ product.id }} - {{ product.nome }}
-          </option>
-        }
-      </select>
-    </label>
-    <label>
-      Peso em gramas (opcional)
-      <input type="number" step="0.001" formControlName="weightGrams" placeholder="3.500" />
-    </label>
-    <label>
       Data de emissão
       <input type="date" formControlName="issueDate" />
     </label>
@@ -63,14 +48,70 @@
         <option [ngValue]="statusEnum.Expirado">Expirado</option>
       </select>
     </label>
-    <label class="full">
-      Descrição
-      <textarea rows="3" formControlName="description" placeholder="Detalhes do orçamento"></textarea>
-    </label>
-    <label class="full">
-      Observações
-      <textarea rows="2" formControlName="notes" placeholder="Informações adicionais"></textarea>
-    </label>
+    <section class="product-section full">
+      <div class="product-section__header">
+        <div>
+          <h3>Produtos do orçamento (opcional)</h3>
+          <p>Adicione um ou mais produtos para compor este orçamento.</p>
+        </div>
+        <button type="button" (click)="openProductDialog()">Selecionar produto</button>
+      </div>
+
+      <div class="product-section__meta">
+        <span>Total selecionado: {{ selectedProducts.length }}</span>
+      </div>
+
+      @if (selectedProducts.length === 0) {
+        <div class="product-empty">
+          <p>Nenhum produto adicionado.</p>
+          <button type="button" (click)="openProductDialog()">Adicionar primeiro produto</button>
+        </div>
+      } @else {
+        <div class="product-list">
+          <table>
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Produto</th>
+                <th>Peso (g)</th>
+                <th>Quantidade</th>
+                <th class="align-right">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (product of selectedProducts; track product.id) {
+                <tr>
+                  <td>{{ product.id }}</td>
+                  <td>{{ product.nome }}</td>
+                  <td>
+                    <input
+                      type="number"
+                      step="0.001"
+                      [value]="product.weightGrams ?? ''"
+                      (input)="updateSelectedProductWeight(product.id, $any($event.target).value)"
+                      placeholder="Ex: 3.500"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      step="1"
+                      min="1"
+                      [value]="product.quantity"
+                      (input)="updateSelectedProductQuantity(product.id, $any($event.target).value)"
+                      placeholder="1"
+                    />
+                  </td>
+                  <td class="align-right">
+                    <button type="button" (click)="removeSelectedProduct(product.id)">Remover</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
   </section>
 
   <div class="form-actions">
@@ -81,3 +122,57 @@
     <button type="button" class="ghost" (click)="handleCancel()" [disabled]="loading">Cancelar</button>
   </div>
 </form>
+
+@if (productDialogOpen) {
+  <div class="product-dialog" role="dialog" aria-modal="true">
+    <div class="product-dialog__backdrop" (click)="closeProductDialog()"></div>
+    <div class="product-dialog__panel">
+      <header>
+        <div>
+          <h4>Selecionar produto</h4>
+          <p>Escolha um item para incluir no orçamento. O peso sera preenchido depois.</p>
+        </div>
+        <button type="button" (click)="closeProductDialog()" aria-label="Fechar dialog">&times;</button>
+      </header>
+
+      <div class="product-dialog__toolbar">
+        <input
+          type="text"
+          [value]="productSearch"
+          (input)="updateProductSearch($any($event.target).value)"
+          placeholder="Buscar por codigo ou nome do produto"
+        />
+        <span>{{ filteredAvailableProducts.length }} disponivel(is)</span>
+      </div>
+
+      @if (filteredAvailableProducts.length === 0) {
+        <p class="empty-message">Nenhum produto encontrado para este filtro.</p>
+      } @else {
+        <div class="product-selector-list">
+          <table>
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Produto</th>
+                <th class="align-right">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (product of filteredAvailableProducts; track product.id) {
+                <tr>
+                  <td>{{ product.id }}</td>
+                  <td>{{ product.nome }}</td>
+                  <td class="align-right">
+                    <button type="button" (click)="addSelectedProduct(product.id)">
+                      Adicionar
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+}
